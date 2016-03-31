@@ -55,7 +55,7 @@ ROOT_URLCONF = 'healthcareweb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR+'/healthcareweb'],
+        'DIRS': [os.path.join(BASE_DIR,"healthcareweb","templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
