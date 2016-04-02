@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" ng-app="Signup">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -112,7 +112,7 @@
       </div><!-- /.container -->
     </nav><!-- /.navbar -->
 
-    <div class="container">
+    <div class="container" ng-controller="SignUpController">
 
       <div class="row row-offcanvas row-offcanvas-right">
 
@@ -232,6 +232,7 @@
 							    <div class="col-sm-offset-2 col-sm-10">
 							      <button type="submit" class="btn btn-primary">Sign up</button>
 							      <button type="submit" class="btn btn-primary">Cancel</button>
+							      <button type="button" ng-click="doSignup()"> Check post</button>
 							    </div>
 							  </div>
 							</form>
@@ -277,6 +278,8 @@
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
     <script src="{% static "select2-4.0.2/dist/js/select2.full.min.js" %}"></script>
+    <script src="{% static "angularjs/angular.min.js" %}"></script>
+    <script src="{% static "custom/js/signupController.js" %}"></script>
 
     <script type="text/javascript">
 		var data = [{ id: 0, text: 'Accident and emergency medicine' }, { id: 1, text: 'Allergology' }, 

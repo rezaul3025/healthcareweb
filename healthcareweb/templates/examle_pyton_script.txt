@@ -1,0 +1,374 @@
+from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
+from BioinfScripts.AnnotationTools import checkHGMD_reformated, getSequence, genomicChange2cdnaChange, AVApatter2genomicChange, varNameToPattern, genomicChange2proteinChange, checkESP
+from BioinfScripts.Functions import getVariantRefVar, getTranscriptAdditionalInfo
+from django.views.decorators.csrf import csrf_exempt,csrf_protect
+from django.http import Http404,HttpRequest,HttpResponse,HttpResponseRedirect
+from BioinfScripts.CentoMD_toolbox import parseVariant,clinvar,normalizeVcf, checkHGMD_vcf, checkESP, check1kg_phase3, checkExac, checkSNP
+import json
+import sys
+from BioinfScripts.getExonCount import *
+#output: hgmd_accession,hgmd_type,hgmd_phenotype, hgmd_rs,hgmd_cdna, hgmd_link
+
+### DEPRECATED??? 
+@csrf_exempt
+@require_http_methods(["POST"])
+def getHGMD(request):
+##    This method will call bioinf function checkHGMD_reformated from AnnotationTools
+    if request.method == 'POST':
+        chromosome = request.POST['chromosome']
+        position_g_start = request.POST['position_g_start']
+        position_g_end = request.POST['position_g_end']
+        gDNA = request.POST['gDNA']
+        
+        data = json.loads(getVariantRefVar(chromosome,int(position_g_start),int(position_g_end),gDNA))
+        #There is only one exception, for the duplication we have to call checkHGMD with different parameters:
+        # position_g_start = position_g_end
+        # position_g_end = position_g_end + 1
+        if (gDNA.find('dup')!=-1):
+            print chromosome+" "+position_g_start+" "+position_g_end+" "+gDNA+data["ref"]+" "+data["var"]
+            HGMD_Result = checkHGMD_reformated(chromosome,str(position_g_end),str(int(position_g_end)+1),data["ref"],data["var"])
+        else:
+            HGMD_Result = checkHGMD_reformated(chromosome,str(position_g_start),str(position_g_end),data["ref"],data["var"])
+        response_data = {}
+        response_data['hgmd_accession'] = HGMD_Result[0]
+        return HttpResponse(json.dumps(response_data), content_type="application/json") 
+    
+@csrf_exempt
+@require_http_methods(["GET"])
+def getHGMD_GET(request):
+##    This method will call bioinf function checkHGMD_reformated from AnnotationTools
+    if request.method == 'GET':
+        #HGMD_Result = checkHGMD_reformated('chr13','100634342','100634342','G','-')
+        #print getVariantRefVar('X',100653789 , 100653789)
+        #print getSequence('X',100653013,100653015)
+        #print getSequence('17',41279193,41279195)
+        
+        ##################################################
+        #Use cases
+        ##################################################
+        #if we have a substitution then character before < become ref and character after < become var
+        data = json.loads(getVariantRefVar('x',100653789,100653789,'g.100653789C>T'))
+        print data
+        print checkHGMD_reformated('X','100653789','100653789',data["ref"],data["var"])
+        print '\n'
+        #if we have a deletion and start and end position are the same, then ref is last character and var is '-'
+        data = json.loads(getVariantRefVar('2',169869792,169869792,'g.169869792delT'))
+        print data
+        print checkHGMD_reformated('2','169869792','169869792',data["ref"],data["var"])
+        print '\n'
+        #if we have a deletion and range of g position then ref become all characters after substring del and var become '-'    
+        data = json.loads(getVariantRefVar('x',100653013,100653015,'g.100653013_100653015delCTC'))
+        print data
+        print checkHGMD_reformated('X','100653013','100653015',data["ref"],data["var"])
+        print '\n'
+        #if we have a deletion and range of g position but we do not have any characters after substring del, then we have to call function getSequence which returns correct ref number
+        data = json.loads(getVariantRefVar('13',23778032,23778035,'g.23778032_23778035del'))
+        print data
+        print checkHGMD_reformated('13','23778032','23778035',data["ref"],data["var"])
+        print '\n'
+        #if we have a insertion then ref = '-' and var has a same rules as for deletion
+        data = json.loads(getVariantRefVar('9',135782144,135782145,'g.135782144_135782145insA'))
+        print data
+        print checkHGMD_reformated('9','135782144','135782145',data["ref"],data["var"])
+        print '\n'
+        #if we have a delins then for the ref use function getSequence and for the var use the rest characters behind substring delins
+        data = json.loads(getVariantRefVar('17',78090858,78090858,'g.78090858delinsAT'))
+        print data
+        print checkHGMD_reformated('17','78090858','78090858',data["ref"],data["var"])
+        print '\n'
+        #if we have a duplication then position_g_start become position_g_end and position_g_end become position_g_end+1
+        data = json.loads(getVariantRefVar('3',33138501,33138501,'g.33138501dup'))
+        print data
+        #!!!!!!!!!!!!!!!!!!!When you call function checkHGMD put position_g_end + 1!!!!!!!!!!!!!!!!!! only for duplcation
+        print checkHGMD_reformated('3','33138501','33138502',data["ref"],data["var"])
+        print '\n'
+        #Example of delins which doesn't exists into the LOVD database 
+        data = json.loads(getVariantRefVar('20',10637053,10637053,'g.10637053delinsACT'))
+        print data
+        print checkHGMD_reformated('20','10637053','10637053',data["ref"],data["var"])
+        print '\n'
+
+        data = json.loads(getVariantRefVar('20',10637053,10637053,'g.10637053delinsACT'))
+        HGMD_Result = checkHGMD_reformated('20','10637053','10637053',data["ref"],data["var"])
+        response_data = {}
+        response_data['hgmd_accession'] = HGMD_Result[0]
+        return HttpResponse(json.dumps(response_data), content_type="application/json") 
+
+   
+    
+@csrf_exempt
+@require_http_methods(["POST"])
+def getDBsnp(request):
+ 
+    gDNA = request.POST['gDNA']
+    position_g_start = int(request.POST['position_g_start'])
+    position_g_end = int(request.POST['position_g_end'])
+    chromosome = request.POST['chromosome']
+    transcript = request.POST['transcript']
+
+    response_data = {}
+    #get var and ref number from gDNA
+    varRef = json.loads(getVariantRefVar(chromosome,position_g_start,position_g_end,gDNA))
+    #create genomic
+    genomic = (chromosome,position_g_start,position_g_end,str(varRef['ref']),str(varRef['var']))
+    #from geneSymbol get trancscript number, with many additional information
+    tx = getTranscriptAdditionalInfo(transcript)[0]
+    
+    #Exon
+    response_data['Exon'] =  genomicChange2cdnaChange(genomic,tx)[1]
+    #Protein change
+    response_data['proteinChange'] = genomicChange2proteinChange(genomic,tx)
+    
+    
+    #check 1kGenom
+    if check1kg_phase3(genomic[0],genomic[1],genomic[2],genomic[3],genomic[4])[4] != '':
+        response_data['dbSNP'] = check1kg_phase3(genomic[0],genomic[1],genomic[2],genomic[3],genomic[4])[4] 
+    #check ESP
+    elif checkESP(genomic[0],genomic[1],genomic[2],genomic[3],genomic[4])[4] != '': 
+        response_data['dbSNP'] = checkESP(genomic[0],genomic[1],genomic[2],genomic[3],genomic[4])[4] 
+    # check HGMD
+    elif checkHGMD_reformated(chromosome,position_g_start,position_g_end,str(varRef['ref']),str(varRef['var']))[3] != '':
+        response_data['dbSNP'] = checkHGMD_reformated(chromosome,position_g_start,position_g_end,str(varRef['ref']),str(varRef['var']))[3] 
+    else:
+        response_data['dbSNP'] = ''
+
+    print json.dumps(response_data)
+    return HttpResponse(json.dumps(response_data), content_type="application/json") 
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def getDBsnp_GET(request):
+    
+    #Substitution case
+    #Parameters which function required
+    gDNA = 'g.100658816G>A'
+    position_g_start = 100658816
+    position_g_end = 100658816
+    chromosome = 'X'
+    transcript = 'NM_000169.2'
+    
+    response_data = {}
+    #get var and ref number from gDNA
+    varRef = json.loads(getVariantRefVar(chromosome,position_g_start,position_g_end,gDNA))
+    #create genomic
+    genomic = (chromosome,position_g_start,position_g_end,str(varRef['ref']),str(varRef['var']))
+    #from geneSymbol get trancscript number, with many additional information
+    tx = getTranscriptAdditionalInfo(transcript)[0]
+    
+        
+    #Exon
+    response_data['Exon'] =  genomicChange2cdnaChange(genomic,tx)[1]
+    #Protein change
+    response_data['proteinChange'] = genomicChange2proteinChange(genomic,tx)
+    
+    
+
+    if check1kg_phase3(genomic[0],genomic[1],genomic[2],genomic[3],genomic[4])[4] != '':
+        response_data['dbSNP'] = check1kg_phase3(genomic[0],genomic[1],genomic[2],genomic[3],genomic[4])[4] 
+    elif checkESP(genomic[0],genomic[1],genomic[2],genomic[3],genomic[4])[4] != '': 
+        response_data['dbSNP'] = checkESP(genomic[0],genomic[1],genomic[2],genomic[3],genomic[4])[4] 
+    elif checkHGMD_reformated(chromosome,position_g_start,position_g_end,str(varRef['ref']),str(varRef['var']))[3] != '':
+        response_data['dbSNP'] = checkHGMD_reformated(chromosome,position_g_start,position_g_end,str(varRef['ref']),str(varRef['var']))[3] 
+    else:
+        response_data['dbSNP'] = ''
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json") 
+    
+@csrf_exempt
+@require_http_methods(["GET"])
+def getHGMDandDBSNP(request):
+    if request.method == 'GET':
+        #Get parameters from Client side
+        chromosome = request.GET['chromosome']
+        position_g_start = int(request.GET['position_g_start'])
+        position_g_end = int(request.GET['position_g_end'])
+        gDNA = request.GET['gDNA']
+        
+        #########
+        #Return param
+        
+        try:
+            ################################################################################
+            #Get HGMD number from DB
+            data = json.loads(getVariantRefVar(chromosome,position_g_start,position_g_end,gDNA))
+            
+            #There is only one exception, for the duplication we have to call checkHGMD with different parameters:
+            # position_g_start = position_g_end
+            # position_g_end = position_g_end + 1
+            if (gDNA.find('dup')!=-1):
+                print chromosome+" "+position_g_start+" "+position_g_end+" "+gDNA+data["ref"]+" "+data["var"]
+                HGMD_Result = checkHGMD_reformated(chromosome,str(position_g_end),str(position_g_end+1),data["ref"],data["var"])
+            else:
+                HGMD_Result = checkHGMD_reformated(chromosome,str(position_g_start),str(position_g_end),data["ref"],data["var"])
+            response_data = {}
+            response_data['hgmd_accession'] = HGMD_Result[0]
+        except:
+             print "Error in get HGMD", sys.exc_info()[0]
+        ################################################################################
+        try:
+            #Get DBSNP number from db
+            #get var and ref number from gDNA
+            varRef = json.loads(getVariantRefVar(chromosome,position_g_start,position_g_end,gDNA))
+            #create genomic
+            genomic = (chromosome,position_g_start,position_g_end,str(varRef['ref']),str(varRef['var']))
+            #from geneSymbol get trancscript number, with many additional information
+                       
+            print check1kg_phase3(genomic[0],genomic[1],genomic[2],genomic[3],genomic[4])[4]
+            #check 1kGenom
+            if check1kg_phase3(genomic[0],genomic[1],genomic[2],genomic[3],genomic[4])[4] != '':
+                response_data['dbSNP'] = check1kg_phase3(genomic[0],genomic[1],genomic[2],genomic[3],genomic[4])[4] 
+            #check ESP
+            elif checkESP(genomic[0],genomic[1],genomic[2],genomic[3],genomic[4])[4] != '': 
+                response_data['dbSNP'] = checkESP(genomic[0],genomic[1],genomic[2],genomic[3],genomic[4])[4]
+            # check HGMD
+            elif checkHGMD_reformated(chromosome,position_g_start,position_g_end,str(varRef['ref']),str(varRef['var']))[3] != '':
+                response_data['dbSNP'] = checkHGMD_reformated(chromosome,position_g_start,position_g_end,str(varRef['ref']),str(varRef['var']))[3] 
+            else:
+                response_data['dbSNP'] = ''
+        except:
+             print "Error in get DBSNP", sys.exc_info()               
+        
+        return HttpResponse(json.dumps(response_data), content_type="application/json") 
+    
+#statistics
+@csrf_exempt
+@require_http_methods(["GET"])
+def getExonCountRest(request):
+    if request.method == 'GET':
+        
+        transcript = request.GET['transcript']
+        print transcript
+        data = getExonCount(str(transcript))
+        response_data = {}
+        response_data['data'] = data
+             
+        return HttpResponse(json.dumps(response_data), content_type="application/json") 
+
+#statistics
+@csrf_exempt
+@require_http_methods(["GET"])
+def getClinVarInfo(request):
+    if request.method == 'GET':
+        genom_hgvs = str(request.GET['chromGdna'])
+        print genom_hgvs
+        #transcript = request.GET['transcript']
+        #print transcript
+        #data = getExonCount(str(transcript))
+        #response_data = {}
+        #response_data['data'] = data
+        clin_sig_data, snp_data, freq_data, submissions_data, pubmedIds, clinVarId = clinvar(genom_hgvs)
+        
+        print snp_data
+        print freq_data
+        print submissions_data
+        print pubmedIds
+        print clinVarId
+        result = ""
+        clin_sig_data = str(clin_sig_data)
+        if clin_sig_data != None and len(clin_sig_data) > 0:
+            result = "clin_sig_data:" +clin_sig_data[1:-1]
+        freq_data= str(freq_data)    
+        if freq_data!= None and len(freq_data) > 0:
+            result +="|freq_data:"+freq_data[2:-2]
+        snp_data=str(snp_data)
+        if snp_data!= None and len(snp_data) > 0:
+            result +="|snp_data:"+snp_data[2:-2] 
+        submissions_data = str(submissions_data)
+        if submissions_data!= None and len(submissions_data) > 0:
+            result +="|no_of_submission:"+submissions_data
+        if pubmedIds != None and len(pubmedIds) > 0:
+            pubmedIds = str(pubmedIds)
+            result +="|pubmedIds:"+pubmedIds[1:-1]
+        clinVarId = str(clinVarId)
+        if clinVarId != None and len(clinVarId) > 0:
+            result +="|clinVarId:"+clinVarId
+        print result
+        #result = "clin_sig_data:" +clin_sig_data[1:-1]+"|snp_data:"+snp_data[2:-2]+"|freq_data:"+freq_data[2:-2]+"|no_of_submission:"+submissions_data+"|pubmedIds:"+pubmedIds[1:-1]+"|clinVarId:"+clinVarId     
+        return HttpResponse(result, content_type="application/json") #HttpResponse(json.dumps(), content_type="application/json")  
+    
+@csrf_exempt
+@require_http_methods(["GET"])
+def getHGMDInfo(request): 
+    if request.method == 'GET':
+        chrom_gdna = str(request.GET['chromGdna'])
+        gene = str(request.GET['gene'])
+        chrom, start, end, ref, var = parseVariant(chrom_gdna, gene)
+        vcf_new = normalizeVcf(chrom,start,ref,var)
+        acc_num, variant_class, disease, dbsnp = checkHGMD_vcf(vcf_new)
+        
+        print acc_num
+        print variant_class
+        print disease
+        print dbsnp
+        
+        hgmd_result = '{"accNum":"'+acc_num+'","variantClass":"'+variant_class+'","disease":"'+disease+'","dbsnp":"'+dbsnp+'"}'
+        
+        return HttpResponse(hgmd_result, content_type="application/json") 
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def checkESPinfo(request): 
+    if request.method == 'GET':
+        chrom_gdna = str(request.GET['chromGdna'])
+        gene = str(request.GET['gene'])
+        chrom, start, end, ref, var = parseVariant(chrom_gdna, gene)
+        snpId, snpFreq_string = checkESP(chrom, start, end, ref, var)
+    
+        print snpId
+        print snpFreq_string
+        
+        esp_result = '{"snpId":"'+snpId+'","snpFreqString":"'+snpFreq_string+'"}'
+        
+        return HttpResponse(esp_result, content_type="application/json")       
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def check1KGenomesinfo(request): 
+    if request.method == 'GET':
+        chrom_gdna = str(request.GET['chromGdna'])
+        gene = str(request.GET['gene'])
+        chrom, start, end, ref, var = parseVariant(chrom_gdna, gene)
+        vcf_new = normalizeVcf(chrom,start,ref,var)
+        chrom, vcf_pos, vcf_ref, vcf_var  = vcf_new
+        snpId, snpFreq_string = check1kg_phase3(chrom, vcf_pos, vcf_ref, vcf_var)
+    
+        print snpId
+        print snpFreq_string
+        
+        esp_result = '{"snpId":"'+snpId+'","snpFreqString":"'+snpFreq_string+'"}'
+        
+        return HttpResponse(esp_result, content_type="application/json")   
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def checkExAcinfo(request): 
+    if request.method == 'GET':
+        chrom_gdna = str(request.GET['chromGdna'])
+        gene = str(request.GET['gene'])
+        chrom, start, end, ref, var = parseVariant(chrom_gdna, gene)
+        vcf_new = normalizeVcf(chrom,start,ref,var)
+        chrom, vcf_pos, vcf_ref, vcf_var  = vcf_new
+        snpId, snpFreq_string = checkExac(chrom, vcf_pos, vcf_ref, vcf_var)
+    
+        #print vcf_new+' info exAC'
+        print snpFreq_string
+        
+        exac_result = '{"snpId":"'+snpId+'","snpFreqString":"'+snpFreq_string+'"}'
+        
+        return HttpResponse(exac_result, content_type="application/json")
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def checkSNPinfo(request): 
+    if request.method == 'GET':
+        chrom_gdna = str(request.GET['chromGdna'])
+        gene = str(request.GET['gene'])
+        
+        dbSNP = checkSNP(chrom_gdna, gene)
+    
+        print dbSNP+' info snp'
+       
+        #exac_result = '{"snpId":"'+snpId+'","snpFreqString":"'+snpFreq_string+'"}'
+        
+        return HttpResponse(dbSNP, content_type="application/json")            
