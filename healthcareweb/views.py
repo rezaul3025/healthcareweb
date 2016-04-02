@@ -3,7 +3,7 @@ from django.shortcuts import render
 from healthcareweb.db.mysqlconn import getConnection
 
 def index(request):
-	conn = getConnection()
+	#conn = getConnection()
 	return render(request, 'index.html')
 
 def signup(request):
