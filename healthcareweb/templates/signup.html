@@ -137,7 +137,7 @@
 					    	  <div class="form-group">
 							    <label for="init" class="col-sm-2 control-label">Title</label>
 							    <div class="col-sm-10">
-							      <select class="form-control" id="init">
+							      <select class="form-control" id="init" ng-model="doctor.title">
 							      	<option>Dr.</option>
 							      	<option>Prof.</option>
 							      	<option>Prof. Dr.</option>
@@ -147,19 +147,19 @@
 							  <div class="form-group">
 							    <label for="firstName" class="col-sm-2 control-label">First Name</label>
 							    <div class="col-sm-10">
-							      <input type="text" class="form-control" id="firstName" placeholder="First Name">
+							      <input type="text" ng-model="doctor.firstName" class="form-control" id="firstName" placeholder="First Name">
 							    </div>
 							  </div>
 							  <div class="form-group">
 							    <label for="lastName" class="col-sm-2 control-label">Last Name</label>
 							    <div class="col-sm-10">
-							      <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+							      <input type="text" ng-model="doctor.lastName" class="form-control" id="lastName" placeholder="Last Name">
 							    </div>
 							  </div>
 							  <div class="form-group">
 							    <label for="specialization" class="col-sm-2 control-label">Specialization</label>
 							    <div class="col-sm-10">
-							      <input type="text" class="form-control" multiple="multiple" id="specialization"/>
+							      <input type="text" ng-model="doctor.specialization" class="form-control" multiple="multiple" id="specialization"/>
 							    </div>
 							  </div>
 							  <h4>Address</h4>
@@ -167,25 +167,25 @@
 							  <div class="form-group">
 							    <label for="line1" class="col-sm-2 control-label">Line1</label>
 							    <div class="col-sm-10">
-									<input type="text" class="form-control" id="line1" placeholder="Line1">
+									<input type="text" ng-model="doctor.line1" class="form-control" id="line1" placeholder="Line1">
 							    </div>
 							  </div>
 							  <div class="form-group">
 							    <label for="line2" class="col-sm-2 control-label">Line2</label>
 							    <div class="col-sm-10">
-									<input type="text" class="form-control" id="line2" placeholder="Line2">
+									<input type="text" ng-model="doctor.line2" class="form-control" id="line2" placeholder="Line2">
 							    </div>
 							  </div>
 							  <div class="form-group">
 							    <label for="postCode" class="col-sm-2 control-label">Post Code</label>
 							    <div class="col-sm-10">
-									<input type="text" class="form-control" id="postCode" placeholder="Post Code">
+									<input type="text" ng-model="doctor.postCode" class="form-control" id="postCode" placeholder="Post Code">
 							    </div>
 							  </div>
 							  <div class="form-group">
 							    <label for="city" class="col-sm-2 control-label">City</label>
 							    <div class="col-sm-10">
-									<input type="text" class="form-control" id="city" placeholder="City">
+									<input type="text" ng-model="doctor.city" class="form-control" id="city" placeholder="City">
 							    </div>
 							  </div>
 							  <h4>Contact</h4>
@@ -193,19 +193,19 @@
 							  <div class="form-group">
 							    <label for="mobile" class="col-sm-2 control-label">Mobile</label>
 							    <div class="col-sm-10">
-									<input type="text" class="form-control" id="mobile" placeholder="Mobile">
+									<input type="text" ng-model="doctor.mobile" class="form-control" id="mobile" placeholder="Mobile">
 							    </div>
 							  </div>
 							  <div class="form-group">
 							    <label for="email" class="col-sm-2 control-label">Email</label>
 							    <div class="col-sm-10">
-									<input type="text" class="form-control" id="email" placeholder="Email">
+									<input type="text" ng-model="doctor.email" class="form-control" id="email" placeholder="Email">
 							    </div>
 							  </div>
 							  <div class="form-group">
 							    <label for="website" class="col-sm-2 control-label">Website</label>
 							    <div class="col-sm-10">
-									<input type="text" class="form-control" id="website" placeholder="Web site">
+									<input type="text" ng-model="doctor.website" class="form-control" id="website" placeholder="Web site">
 							    </div>
 							  </div>
 							  <h4>Credential</h4>
@@ -213,26 +213,26 @@
 							  <div class="form-group">
 							    <label for="emailPhone" class="col-sm-2 control-label">Email / Phone no.</label>
 							    <div class="col-sm-10">
-									<input type="text" class="form-control" id="emailPhone" placeholder="Email/Phone No.">
+									<input type="text" ng-model="doctor.emailPhone" class="form-control" id="emailPhone" placeholder="Email/Phone No.">
 							    </div>
 							  </div>
 							  <div class="form-group">
 							    <label for="password" class="col-sm-2 control-label">Password</label>
 							    <div class="col-sm-10">
-									<input type="password" class="form-control" id="password" placeholder="Password">
+									<input type="password" ng-model="doctor.password" class="form-control" id="password" placeholder="Password">
 							    </div>
 							  </div>
 							  <div class="form-group">
 							    <label for="rePassword" class="col-sm-2 control-label">Retype Password</label>
 							    <div class="col-sm-10">
-									<input type="password" class="form-control" id="rePassword" placeholder="Retype Password">
+									<input type="password" ng-model="doctor.rePassword" class="form-control" id="rePassword" placeholder="Retype Password">
 							    </div>
 							  </div>
 							  <div class="form-group">
 							    <div class="col-sm-offset-2 col-sm-10">
 							      <button type="submit" class="btn btn-primary">Sign up</button>
 							      <button type="submit" class="btn btn-primary">Cancel</button>
-							      <button type="button" ng-click="doSignup()"> Check post</button>
+							      <button type="button" ng-click="doSignup(doctor)"> Check post</button>
 							    </div>
 							  </div>
 							</form>
