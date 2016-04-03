@@ -4,7 +4,10 @@ module.controller('SignUpController', ['$http', '$scope', '$window',  function($
 		$http({
         	method : "POST",
         	url : "/dosignup/",
-        	data:{
+        	headers: {
+        			'Content-Type': 'application/x-www-form-urlencoded'
+    			},
+        	data:$.param({
         		title : doctor.title,
         		firstName: doctor.firstName,
         		lastName:doctor.lastName,
@@ -16,7 +19,7 @@ module.controller('SignUpController', ['$http', '$scope', '$window',  function($
         		mobile:doctor.mobile,
         		email:doctor.email,
         		website:doctor.website
-        	}
+        	})
     	}).then(function mySucces(response) {
         	$scope.myWelcome = response.data;
     	}, function myError(response) {

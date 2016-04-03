@@ -19,17 +19,21 @@ def signup(request):
 @require_http_methods(["POST"])
 @csrf_exempt
 def dosignup(request):
-	title = request.POST["title"];
-	firstName = request.POST["firstName"];
-	lastName = request.POST["lastName"];
-	specialization = request.POST["specialization"];
-	addrLine1 = request.POST["addrLine1"];
-	addrLine2 = request.POST["addrLine2"];
-	postCode = request.POST["postCode"];
-	city = request.POST["city"];
-	mobile = request.POST["mobile"];
-	email = request.POST["email"];
-	website = request.POST["website"];
+	title = request.POST['title']
+	print(request)
+	print(request.method == 'POST')
+	print("tiii test")
+	firstName = request.POST.get("firstName");
+	print(firstName)
+	lastName = request.POST.get("lastName");
+	specialization = request.POST.get("specialization");
+	addrLine1 = request.POST.get("addrLine1");
+	addrLine2 = request.POST.get("addrLine2");
+	postCode = request.POST.get("postCode");
+	city = request.POST.get("city");
+	mobile = request.POST.get("mobile");
+	email = request.POST.get("email");
+	website = request.POST.get("website");
 	doctor = Doctor.objects.create(title=title,firstName=firstName,lastName=lastName,specialization=specialization,
 		addrLine1=addrLine1,addrLine2=addrLine2, postCode=postCode,city=city,mobile=mobile,email=email,website=website)
 	#print(d.title)
