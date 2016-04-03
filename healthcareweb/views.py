@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.core import serializers
 from healthcareweb.db.mysqlconn import getConnection
 #from healthcareweb.models.doctor import Doctor
 from healthcareweb.models import Doctor
@@ -18,7 +19,10 @@ def signup(request):
 @require_http_methods(["POST"])
 @csrf_exempt
 def dosignup(request):
-	d = Doctor.objects.create(title="last name")
-
-	return HttpResponse(json.dumps(d), content_type="application/json") 
-
+	doctor = Doctor.objects.create(title="last name")
+	print(d.title)
+	data = serializers.serialize('json', [doctor])
+	#json.dumps(data, content_type="application/json")
+	#data = serializers.serialize('json', self.get_queryset())
+	#return HttpResponse(data, mimetype="application/json")
+	return HttpResponse(data) 
