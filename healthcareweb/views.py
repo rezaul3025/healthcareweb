@@ -17,12 +17,9 @@ def signup(request):
 	return render(request, 'signup.html')
 
 @require_http_methods(["POST"])
-@csrf_exempt
+#@csrf_exempt
 def dosignup(request):
 	title = request.POST['title']
-	print(request)
-	print(request.method == 'POST')
-	print("tiii test")
 	firstName = request.POST.get("firstName");
 	print(firstName)
 	lastName = request.POST.get("lastName");
