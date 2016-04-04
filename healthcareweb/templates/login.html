@@ -83,6 +83,41 @@
 		    width: 50%; /* 6 columns */
 		  }
 		}
+
+		.form-signin {
+		  max-width: 330px;
+		  padding: 15px;
+		  margin: 0 auto;
+		}
+		.form-signin .form-signin-heading,
+		.form-signin .checkbox {
+		  margin-bottom: 10px;
+		}
+		.form-signin .checkbox {
+		  font-weight: normal;
+		}
+		.form-signin .form-control {
+		  position: relative;
+		  height: auto;
+		  -webkit-box-sizing: border-box;
+		     -moz-box-sizing: border-box;
+		          box-sizing: border-box;
+		  padding: 10px;
+		  font-size: 16px;
+		}
+		.form-signin .form-control:focus {
+		  z-index: 2;
+		}
+		.form-signin input[type="email"] {
+		  margin-bottom: -1px;
+		  border-bottom-right-radius: 0;
+		  border-bottom-left-radius: 0;
+		}
+		.form-signin input[type="password"] {
+		  margin-bottom: 10px;
+		  border-top-left-radius: 0;
+		  border-top-right-radius: 0;
+		}
    </style>
   </head>
 
@@ -122,127 +157,25 @@
           </p>
           <div class="row">
           	<div class="col-xs-12 col-sm-9" >
-	            <h3>Doctor &amp; user sign up </h3>
-	            	<div>
-					  <!-- Nav tabs -->
-					  <ul class="nav nav-tabs" role="tablist">
-					    <li role="presentation" class="active"><a href="#doctor-signup" aria-controls="doctor-signup" role="tab" data-toggle="tab">Doctor signup / ডাক্তার নিবন্দ্দন</a></li>
-					    <li role="presentation"><a href="#user-signup" aria-controls="user-signup" role="tab" data-toggle="tab">User signup / ব্যবহারকারী নিবন্দ্দন</a></li>
-					  </ul>
-					  <!-- Tab panes -->
-					  <div class="tab-content">
-					    <div role="tabpanel" class="tab-pane active" id="doctor-signup">
-					    	<br/>
-					    	<form class="form-horizontal">
-					    	  <div class="form-group">
-							    <label for="init" class="col-sm-2 control-label">Title</label>
-							    <div class="col-sm-10">
-							      <select class="form-control" id="init" ng-model="doctor.title">
-							      	<option>Dr.</option>
-							      	<option>Prof.</option>
-							      	<option>Prof. Dr.</option>
-							      </select>
-							    </div>
-							  </div>
-							  <div class="form-group">
-							    <label for="firstName" class="col-sm-2 control-label">First Name</label>
-							    <div class="col-sm-10">
-							      <input type="text" ng-model="doctor.firstName" class="form-control" id="firstName" placeholder="First Name">
-							    </div>
-							  </div>
-							  <div class="form-group">
-							    <label for="lastName" class="col-sm-2 control-label">Last Name</label>
-							    <div class="col-sm-10">
-							      <input type="text" ng-model="doctor.lastName" class="form-control" id="lastName" placeholder="Last Name">
-							    </div>
-							  </div>
-							  <div class="form-group">
-							    <label for="specialization" class="col-sm-2 control-label">Specialization</label>
-							    <div class="col-sm-10">
-							      <input type="text" ng-model="doctor.specialization" class="form-control" multiple="multiple" id="specialization" />
-							    </div>
-							  </div>
-							  <h4>Address</h4>
-							  <hr/>
-							  <div class="form-group">
-							    <label for="line1" class="col-sm-2 control-label">Line1</label>
-							    <div class="col-sm-10">
-									<input type="text" ng-model="doctor.line1" class="form-control" id="line1" placeholder="Line1">
-							    </div>
-							  </div>
-							  <div class="form-group">
-							    <label for="line2" class="col-sm-2 control-label">Line2</label>
-							    <div class="col-sm-10">
-									<input type="text" ng-model="doctor.line2" class="form-control" id="line2" placeholder="Line2">
-							    </div>
-							  </div>
-							  <div class="form-group">
-							    <label for="postCode" class="col-sm-2 control-label">Post Code</label>
-							    <div class="col-sm-10">
-									<input type="text" ng-model="doctor.postCode" class="form-control" id="postCode" placeholder="Post Code">
-							    </div>
-							  </div>
-							  <div class="form-group">
-							    <label for="city" class="col-sm-2 control-label">City</label>
-							    <div class="col-sm-10">
-									<input type="text" ng-model="doctor.city" class="form-control" id="city" placeholder="City">
-							    </div>
-							  </div>
-							  <h4>Contact</h4>
-							  <hr/>
-							  <div class="form-group">
-							    <label for="mobile" class="col-sm-2 control-label">Mobile</label>
-							    <div class="col-sm-10">
-									<input type="text" ng-model="doctor.mobile" class="form-control" id="mobile" placeholder="Mobile">
-							    </div>
-							  </div>
-							  <div class="form-group">
-							    <label for="email" class="col-sm-2 control-label">Email</label>
-							    <div class="col-sm-10">
-									<input type="text" ng-model="doctor.email" class="form-control" id="email" placeholder="Email">
-							    </div>
-							  </div>
-							  <div class="form-group">
-							    <label for="website" class="col-sm-2 control-label">Website</label>
-							    <div class="col-sm-10">
-									<input type="text" ng-model="doctor.website" class="form-control" id="website" placeholder="Web site">
-							    </div>
-							  </div>
-							  <h4>Credential</h4>
-							  <hr/>
-							  <div class="form-group">
-							    <label for="emailPhone" class="col-sm-2 control-label">Email / Phone no.</label>
-							    <div class="col-sm-10">
-									<input type="text" ng-model="doctor.emailPhone" class="form-control" id="emailPhone" placeholder="Email/Phone No.">
-							    </div>
-							  </div>
-							  <div class="form-group">
-							    <label for="password" class="col-sm-2 control-label">Password</label>
-							    <div class="col-sm-10">
-									<input type="password" ng-model="doctor.password" class="form-control" id="password" placeholder="Password">
-							    </div>
-							  </div>
-							  <div class="form-group">
-							    <label for="rePassword" class="col-sm-2 control-label">Retype Password</label>
-							    <div class="col-sm-10">
-									<input type="password" ng-model="doctor.rePassword" class="form-control" id="rePassword" placeholder="Retype Password">
-							    </div>
-							  </div>
-							  <div class="form-group">
-							    <div class="col-sm-offset-2 col-sm-10">
-							      <button type="submit" class="btn btn-primary">Sign up</button>
-							      <button type="submit" class="btn btn-primary">Cancel</button>
-							      <button type="button" ng-click="doSignup(doctor)"> Check post</button>
-							    </div>
-							  </div>
-							</form>
-					    </div>
-					    <div role="tabpanel" class="tab-pane" id="user-signup">
-					    	
-					    </div>
-					  </div>
-					</div>
-	            </div><!--/.col-xs-12.col-sm-9-->
+	           <form class="form-signin" method="POST" action="/dologin/">
+	           	{% csrf_token %}
+		        <h2 class="form-signin-heading">Please login</h2>
+		        <div class="form-group">
+			        <label for="userName" class="sr-only">Email address</label>
+			        <input type="email" name="username" id="userName" class="form-control" placeholder="Email address/ phone no." required autofocus>
+		        </div>
+		        <div class="form-group">
+			        <label for="password" class="sr-only">Password</label>
+			        <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+		        </div>
+		        <div class="checkbox">
+		          <label>
+		            <input type="checkbox" value="remember-me"> Remember me
+		          </label>
+		        </div>
+		        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+		      </form>
+	        </div><!--/.col-xs-12.col-sm-9-->
           </div><!--/row-->
         </div><!--/.col-xs-12.col-sm-9-->
 
@@ -279,10 +212,10 @@
     <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
     <script src="{% static "select2-4.0.2/dist/js/select2.full.min.js" %}"></script>
     <script src="{% static "angularjs/angular.min.js" %}"></script>
-    <script src="{% static "custom/js/signupController.js" %}"></script>
+    <!-- <script src="{% static "custom/js/signupController.js" %}"></script> -->
 
     <script type="text/javascript">
-		var data = [{ id: 'Accident and emergency medicine', text: 'Accident and emergency medicine' }, { id: 'Allergology', text: 'Allergology' }, 
+		/*var data = [{ id: 'Accident and emergency medicine', text: 'Accident and emergency medicine' }, { id: 'Allergology', text: 'Allergology' }, 
 					{ id: 'Anaesthetics', text: 'Anaesthetics' }, { id: 'Biological hematology', text: 'Biological hematology' }, { id: 'Cardiology', text: 'Cardiology' },
 					{ id: 'Child psychiatry', text: 'Child psychiatry'}, { id: 'Clinical biology', text: 'Clinical biology' }, { id: 'Clinical chemistry', text: 'Clinical chemistry' },
 					{ id: 'Clinical neurophysiology', text: 'Clinical neurophysiology'}, { id: 'Craniofacial surgery', text: 'Craniofacial surgery' }, { id: 'Dental, oral and maxillo-facial surgery', text: 'Dental, oral and maxillo-facial surgery' },
@@ -295,7 +228,7 @@
   			data: data,
   			//tokenSeparators: [',', ' ;'],
   			placeholder: "Select Specializations"
-		})
+		})*/
 
 	</script>
     

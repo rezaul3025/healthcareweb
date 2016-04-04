@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http import Http404,HttpRequest,HttpResponse,HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 import json
 
 def index(request):
@@ -16,6 +17,31 @@ def index(request):
 
 def signup(request):
 	return render(request, 'signup.html')
+
+def logininit(request):
+	return render(request, 'login.html')	
+
+@require_http_methods(["POST"])
+def dologin(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            # Redirect to a success page.
+            return render(request, 'index.html')
+        else:
+            #Return a 'disabled account' error message
+            return render(request, 'login.html')
+    else:
+        #Return an 'invalid login' error message
+        return render(request, 'login.html')  
+		
+def logout(request):
+	logout(request)
+	# Redirect to a success page.
+	return render(request, 'index.html')
 
 @require_http_methods(["POST"])
 @csrf_exempt
