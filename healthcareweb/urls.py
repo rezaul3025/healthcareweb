@@ -24,6 +24,6 @@ urlpatterns = [
     url(r'^dosignup/', views.dosignup, name='dosignup'),
     url(r'^login/', views.logininit, name='logininit'),
     url(r'^dologin/', views.dologin, name='dologin'),
-    url(r'^logout/', views.logout, name='logout'),
+    url(r'^logout/', views.dologout, name='dologout'),
     url(r'^admin/', admin.site.urls),
 ]

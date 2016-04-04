@@ -101,11 +101,13 @@
             <li><a href="#contact">Contact</a></li>
           </ul>
           <ul class="nav navbar-nav pull-right">
-         
-            <li><a href="/signup">Sign up / নিবন্দ্দন</a></li>
-            <li><a href="/login">Log in</a></li>
-          
+            {% if not user.is_authenticated %}
+              <li><a href="/signup">Sign up / নিবন্দ্দন</a></li>
+              <li><a href="/login">Log in</a></li>
+            {% else %}
+              <li><a href="#">{{user.username}}</a></li>
               <li><a href="/logout/">logout</a></li>
+            {% endif %}
             
           </ul>
         </div><!-- /.nav-collapse -->
@@ -121,7 +123,9 @@
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
           <div class="jumbotron">
-            <h1>Hello, world!</h1>
+            <h1>Hello, world!
+
+                {{user}}  
             <p>This is an <a href="#">example </a> to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p>
           </div>
           <div class="row">

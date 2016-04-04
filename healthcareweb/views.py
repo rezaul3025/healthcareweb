@@ -8,7 +8,8 @@ from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http import Http404,HttpRequest,HttpResponse,HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect
 import json
 
 def index(request):
@@ -30,21 +31,21 @@ def dologin(request):
         if user.is_active:
             login(request, user)
             # Redirect to a success page.
-            return render(request, 'index.html')
+            return  redirect('/') #render(request, 'index.html')
         else:
             #Return a 'disabled account' error message
-            return render(request, 'login.html')
+            return  redirect('/login/') #render(request, 'login.html')
     else:
         #Return an 'invalid login' error message
-        return render(request, 'login.html')  
+        return  redirect('/login/') #render(request, 'login.html')  
 		
-def logout(request):
+def dologout(request):
 	logout(request)
 	# Redirect to a success page.
-	return render(request, 'index.html')
+	return  redirect('/') #render(request, 'index.html')
 
 @require_http_methods(["POST"])
-#@csrf_exempt
+@csrf_exempt
 def dosignup(request):
 	title = request.POST['title']
 	firstName = request.POST.get("firstName");
