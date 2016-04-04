@@ -18,7 +18,10 @@ module.controller('SignUpController', ['$http', '$scope', '$window',  function($
         		city:doctor.city,
         		mobile:doctor.mobile,
         		email:doctor.email,
-        		website:doctor.website
+        		website:doctor.website,
+                userName:doctor.emailPhone,
+                password:doctor.password
+
         	})
     	}).then(function mySucces(response) {
         	$scope.myWelcome = response.data;

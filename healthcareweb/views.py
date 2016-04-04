@@ -7,6 +7,7 @@ from healthcareweb.models import Doctor
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http import Http404,HttpRequest,HttpResponse,HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth.models import User
 import json
 
 def index(request):
@@ -36,6 +37,9 @@ def dosignup(request):
 	website = request.POST.get("website");
 	doctor = Doctor.objects.create(title=title,firstName=firstName,lastName=lastName,specialization=specialization,
 		addrLine1=addrLine1,addrLine2=addrLine2, postCode=postCode,city=city,mobile=mobile,email=email,website=website)
+
+	user = User.objects.create_user(username=request.POST['userName'], password = request.POST['password'], email = email, first_name=firstName, last_name = lastName)
+	#user.save()
 	#print(d.title)
 	data = serializers.serialize('json', [doctor])
 	#json.dumps(data, content_type="application/json")
