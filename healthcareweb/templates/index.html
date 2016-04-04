@@ -105,7 +105,13 @@
               <li><a href="/signup">Sign up / নিবন্দ্দন</a></li>
               <li><a href="/login">Log in</a></li>
             {% else %}
-              <li><a href="#">{{user.username}}</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user.username}} <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">View profile</a></li>
+                  <li><a href="#">Edit profile</a></li>
+                </ul>
+              </li> 
               <li><a href="/logout/">logout</a></li>
             {% endif %}
             
@@ -123,10 +129,10 @@
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
           <div class="jumbotron">
-            <h1>Hello, world!
-
-                {{user}}  
-            <p>This is an <a href="#">example </a> to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p>
+            <div class="form-group has-feedback">
+              <input type="text" class="form-control input-lg" placeholder="Search doctor by Name, Speclization, City" id="inputSuccess2" />
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
           </div>
           <div class="row">
             <div class="col-xs-6 col-lg-4">
