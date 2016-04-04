@@ -159,7 +159,7 @@
 							  <div class="form-group">
 							    <label for="specialization" class="col-sm-2 control-label">Specialization</label>
 							    <div class="col-sm-10">
-							      <input type="text" ng-model="doctor.specialization" class="form-control" multiple="multiple" id="specialization"/>
+							      <input type="text" ng-model="doctor.specialization" class="form-control" multiple="multiple" id="specialization" />
 							    </div>
 							  </div>
 							  <h4>Address</h4>
@@ -282,18 +282,18 @@
     <script src="{% static "custom/js/signupController.js" %}"></script>
 
     <script type="text/javascript">
-		var data = [{ id: 0, text: 'Accident and emergency medicine' }, { id: 1, text: 'Allergology' }, 
-					{ id: 2, text: 'Anaesthetics' }, { id: 3, text: 'Biological hematology' }, { id: 4, text: 'Cardiology' },
-					{ id: 5, text: 'Child psychiatry'}, { id: 6, text: 'Clinical biology' }, { id: 7, text: 'Clinical chemistry' },
-					{ id: 8, text: 'Clinical neurophysiology'}, { id: 9, text: 'Craniofacial surgery' }, { id: 10, text: 'Dental, oral and maxillo-facial surgery' },
-					{ id: 11, text: 'Dermato-venerology'}, { id: 12, text: 'Dermatology' }, { id: 13, text: 'Endocrinology' },
-					{ id: 14, text: 'Gastro-enterologic surgery'}, { id: 15, text: 'Gastroenterology' }, { id: 16, text: 'General hematology' },
-					{id: 17, text: 'General Practice'}, { id: 18, text: 'General surgery' }, { id: 19, text: 'Geriatrics' },
-					{id: 20, text: 'Immunology'}, { id: 21, text: 'Infectious diseases' }, { id: 22, text: 'Internal medicine' }];
+		var data = [{ id: 'Accident and emergency medicine', text: 'Accident and emergency medicine' }, { id: 'Allergology', text: 'Allergology' }, 
+					{ id: 'Anaesthetics', text: 'Anaesthetics' }, { id: 'Biological hematology', text: 'Biological hematology' }, { id: 'Cardiology', text: 'Cardiology' },
+					{ id: 'Child psychiatry', text: 'Child psychiatry'}, { id: 'Clinical biology', text: 'Clinical biology' }, { id: 'Clinical chemistry', text: 'Clinical chemistry' },
+					{ id: 'Clinical neurophysiology', text: 'Clinical neurophysiology'}, { id: 'Craniofacial surgery', text: 'Craniofacial surgery' }, { id: 'Dental, oral and maxillo-facial surgery', text: 'Dental, oral and maxillo-facial surgery' },
+					{ id: 'Dermato-venerology', text: 'Dermato-venerology'}, { id: 'Dermatology', text: 'Dermatology' }, { id:  'Endocrinology', text: 'Endocrinology' },
+					{ id: 'Gastro-enterologic surgery', text: 'Gastro-enterologic surgery'}, { id: 'Gastroenterology', text: 'Gastroenterology' }, { id: 'General hematology', text: 'General hematology' },
+					{id: 'General Practice', text: 'General Practice'}, { id: 'General surgery', text: 'General surgery' }, { id: 'Geriatrics', text: 'Geriatrics' },
+					{id: 'Immunology', text: 'Immunology'}, { id: 'Infectious diseases', text: 'Infectious diseases' }, { id: 'Internal medicine', text: 'Internal medicine' }];
 
 		$("#specialization").select2({
   			data: data,
-  			tokenSeparators: [',', ' ;'],
+  			//tokenSeparators: [',', ' ;'],
   			placeholder: "Select Specializations"
 		})
 
