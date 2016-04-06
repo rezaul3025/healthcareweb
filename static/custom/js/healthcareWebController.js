@@ -5,4 +5,6 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
 		
 		return key;
 	}
+
+	
 }])

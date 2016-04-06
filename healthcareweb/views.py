@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 import json
+from django.db import connection
 
 def index(request):
 	#conn = getConnection()
@@ -70,3 +71,48 @@ def dosignup(request):
 	#data = serializers.serialize('json', self.get_queryset())
 	#return HttpResponse(data, mimetype="application/json")
 	return HttpResponse(data) 
+
+@require_http_methods(["GET"])
+def getSearchAutocomplete(request):
+	queryStr = request.GET['queryStr']
+	cursor = connection.cursor()
+
+	queryStr = queryStr.replace('\'', '').replace('%', '')
+	args = [queryStr+'%']
+	print(queryStr)
+	autoCompleteResults = []
+
+	fnameSQL = 'SELECT  firstName FROM healthcareweb_doctor WHERE firstName LIKE %s'
+	cursor.execute(fnameSQL,args)
+	firstNames =  cursor.fetchall()
+	#Doctor.objects.raw('SELECT  * FROM healthcareweb_doctor WHERE firstName LIKE \'%s\'' % queryStr)
+	for fn in firstNames:
+		print(fn)
+		autoCompleteResults.append(fn)
+
+	#lastNames =  Doctor.objects.raw('SELECT  * FROM healthcareweb_doctor WHERE lastName LIKE \'%s\'' % queryStr)
+	lnameSQL = 'SELECT  lastName FROM healthcareweb_doctor WHERE lastName LIKE %s'
+	cursor.execute(lnameSQL,args)
+	lastNames =  cursor.fetchall()
+	for ln in lastNames:
+		print(ln)
+		autoCompleteResults.append(ln)
+
+	#specializations =  Doctor.objects.raw('SELECT  * FROM healthcareweb_doctor WHERE specialization LIKE \'%s\'' % queryStr)
+	specializationSQL = 'SELECT  specialization FROM healthcareweb_doctor WHERE specialization LIKE %s'
+	cursor.execute(specializationSQL,args)
+	specializations =  cursor.fetchall()
+	for s in specializations:
+		print(s)
+		autoCompleteResults.append(s)
+	
+	#citis =  Doctor.objects.raw('SELECT  * FROM healthcareweb_doctor WHERE city LIKE \'%s\'' % queryStr)
+	citySQL = 'SELECT  city FROM healthcareweb_doctor WHERE city LIKE %s'
+	cursor.execute(citySQL,args)
+	citis =  cursor.fetchall()
+	for c in citis:
+		print(c)
+		autoCompleteResults.append(c)
+
+	#data = serializers.serialize('json', [list(firstNames)])
+	return HttpResponse(json.dumps(autoCompleteResults))
