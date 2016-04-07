@@ -100,7 +100,7 @@ def getSearchAutocomplete(request):
 		autoCompleteResults.append(ln[0])
 
 	#specializations =  Doctor.objects.raw('SELECT  * FROM healthcareweb_doctor WHERE specialization LIKE \'%s\'' % queryStr)
-	specializationSQL = 'SELECT  specialization FROM healthcareweb_doctor WHERE specialization LIKE %s'
+	specializationSQL = 'SELECT  name FROM healthcareweb_specialization WHERE name LIKE %s'
 	cursor.execute(specializationSQL,args)
 	specializations =  cursor.fetchall()
 	for s in specializations:
@@ -116,7 +116,7 @@ def getSearchAutocomplete(request):
 		autoCompleteResults.append(c[0])
 
 	#data = serializers.serialize('json', [list(firstNames)])
-	return HttpResponse(json.dumps(autoCompleteResults))
+	return HttpResponse(json.dumps(autoCompleteResults), content_type="application/json")
 
 @require_http_methods(["GET"])
 def getAllSpecializations(request):

@@ -131,7 +131,7 @@
           <div class="jumbotron">
             <div class="form-group has-feedback">
               
-              <input type="text" class="form-control input-lg" ng-model="search" uib-typeahead="key for key in getSearchKey() | filter:$viewValue | limitTo:8" placeholder="Search doctor by Name, Speclization, City" id="inputSuccess2" />
+              <input type="text" class="form-control input-lg" ng-model="search" uib-typeahead="key for key in getSearchKey($viewValue)" placeholder="Search doctor by Name, Speclization, City" id="inputSuccess2" />
               <span class="glyphicon glyphicon-search form-control-feedback"></span>
             </div>
           </div>
