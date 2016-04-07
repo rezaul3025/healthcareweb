@@ -88,7 +88,7 @@ def getSearchAutocomplete(request):
 	#Doctor.objects.raw('SELECT  * FROM healthcareweb_doctor WHERE firstName LIKE \'%s\'' % queryStr)
 	for fn in firstNames:
 		print(fn)
-		autoCompleteResults.append(fn)
+		autoCompleteResults.append(fn[0])
 
 	#lastNames =  Doctor.objects.raw('SELECT  * FROM healthcareweb_doctor WHERE lastName LIKE \'%s\'' % queryStr)
 	lnameSQL = 'SELECT  lastName FROM healthcareweb_doctor WHERE lastName LIKE %s'
@@ -96,7 +96,7 @@ def getSearchAutocomplete(request):
 	lastNames =  cursor.fetchall()
 	for ln in lastNames:
 		print(ln)
-		autoCompleteResults.append(ln)
+		autoCompleteResults.append(ln[0])
 
 	#specializations =  Doctor.objects.raw('SELECT  * FROM healthcareweb_doctor WHERE specialization LIKE \'%s\'' % queryStr)
 	specializationSQL = 'SELECT  specialization FROM healthcareweb_doctor WHERE specialization LIKE %s'
@@ -104,7 +104,7 @@ def getSearchAutocomplete(request):
 	specializations =  cursor.fetchall()
 	for s in specializations:
 		print(s)
-		autoCompleteResults.append(s)
+		autoCompleteResults.append(s[0])
 	
 	#citis =  Doctor.objects.raw('SELECT  * FROM healthcareweb_doctor WHERE city LIKE \'%s\'' % queryStr)
 	citySQL = 'SELECT  city FROM healthcareweb_doctor WHERE city LIKE %s'
@@ -112,7 +112,7 @@ def getSearchAutocomplete(request):
 	citis =  cursor.fetchall()
 	for c in citis:
 		print(c)
-		autoCompleteResults.append(c)
+		autoCompleteResults.append(c[0])
 
 	#data = serializers.serialize('json', [list(firstNames)])
 	return HttpResponse(json.dumps(autoCompleteResults))
