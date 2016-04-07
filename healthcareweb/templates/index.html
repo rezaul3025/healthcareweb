@@ -130,13 +130,18 @@
           </p>
           <div class="jumbotron">
             <div class="form-group has-feedback">
-              
-              <input type="text" class="form-control input-lg" ng-model="search" uib-typeahead="key for key in getSearchKey($viewValue)" placeholder="Search doctor by Name, Speclization, City" id="inputSuccess2" />
+              <input type="text" class="form-control input-lg" ng-model="search" uib-typeahead="key for key in getSearchKey($viewValue)" placeholder="Search doctor by Name, Speclization, City" id="inputSuccess2"
+              typeahead-on-select="getSimpleResult($item, $model, $label, $event)" />
               <span class="glyphicon glyphicon-search form-control-feedback"></span>
             </div>
           </div>
           <div class="row">
             <div class="col-xs-6 col-lg-4">
+              {{simpleSearchResults}} 
+               <div ng-bind="simpleSearchResults[0].model"></div>
+               <div ng-repeat="docarr in simpleSearchResults">
+                 <span ng-bind="docarr.fields.firstName"></span>
+               </div>
               <h2>Heading</h2>
               <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. <a href="#"> Etiam porta sem malesuada </a> magna mollis euismod. Donec sed odio dui. </p>
               <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>

@@ -16,5 +16,18 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
     });
   };
 
+  $scope.getSimpleResult = function(item, model, label, event){
+  	 $http({
+            method : "GET",
+            url : "/simplesearch/",
+            params:{queryStr:item}
+        }).then(function succes(response) {
+            $scope.simpleSearchResults = response.data;
+            //alert($scope.simpleSearchResults)
+        }, function error(response) {
+           // $scope.error = response.statusText;
+        });
+  };
+
 	
 }])

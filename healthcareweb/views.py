@@ -135,7 +135,9 @@ def simpleSearch(request):
 	queryStr = request.GET['queryStr']
 	data = []
 	try:
-		doctors = Doctor.objects.filter(Q(specialization__icontains=queryStr) | Q(firstName__startswith=queryStr))
+		doctors = Doctor.objects.filter(Q(specialization__icontains=queryStr) | 
+			Q(firstName__startswith=queryStr) | Q(lastName__startswith=queryStr) |
+			Q(city__startswith=queryStr))
 
 		data = serializers.serialize('json', doctors)
 	except Exception as ex:
