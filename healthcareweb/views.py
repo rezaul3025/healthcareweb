@@ -13,6 +13,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 import json
 from django.db import connection
+from django.db.models import Q
+
+
 
 def index(request):
 	#conn = getConnection()
@@ -123,12 +126,20 @@ def getAllSpecializations(request):
 	allSpecializationsOb = Specialization.objects.all()
 	allSpecializations = [];
 	for sp in allSpecializationsOb:
-		#print(c)
 		allSpecializations.append(sp.name)
-	#print(allSpecializations)
-	#data = serializers.serialize('json', [allSpecializations])
-	#json.dumps(data, content_type="application/json")
-	#data = serializers.serialize('json', self.get_queryset())
 	return HttpResponse(json.dumps(allSpecializations), content_type="application/json")
 
-	#return HttpResponse(allSpecializations) 
+
+@require_http_methods(["GET"])
+def simpleSearch(request):
+	queryStr = request.GET['queryStr']
+	data = []
+	try:
+		doctors = Doctor.objects.filter(Q(specialization__icontains=queryStr) | Q(firstName__startswith=queryStr))
+
+		data = serializers.serialize('json', doctors)
+	except Exception as ex:
+		print(ex)
+
+	return HttpResponse(data, content_type="application/json")
+

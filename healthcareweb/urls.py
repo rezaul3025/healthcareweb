@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from . import views
+from . import views 
 
 urlpatterns = [
 	url(r'^$', views.index, name='index'),
@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^logout/', views.dologout, name='dologout'),
     url(r'^getsearchautocomplete/', views.getSearchAutocomplete, name='getSearchAutocomplete'),
     url(r'^specializations/', views.getAllSpecializations, name='getAllSpecializations'),
+    url(r'^simplesearch/', views.simpleSearch, name='simpleSearch'),
     url(r'^admin/', admin.site.urls),
 ]
