@@ -1,55 +1,55 @@
-Accident and emergency medicine
-Allergology
-Anaesthetics
-Biological hematology
-Cardiology
-Child psychiatry
-Clinical biology
-Clinical chemistry
-Clinical neurophysiology
-Craniofacial surgery
-Dental, oral and maxillo-facial surgery
-Dermato-venerology
-Dermatology
-Endocrinology
-Gastro-enterologic surgery
-Gastroenterology
-General hematology
-General Practice
-General surgery
-Geriatrics
-Immunology
-Infectious diseases
-Internal medicine
-Laboratory medicine
-Maxillo-facial surgery
-Microbiology
-Nephrology
-Neuro-psychiatry
-Neurology
-Neurosurgery
-Nuclear medicine
-Obstetrics and gynecology
-Occupational medicine
-Ophthalmology
-Orthopaedics
-Otorhinolaryngology
-Paediatric surgery
-Paediatrics
-Pathology
-Pharmacology
-Physical medicine and rehabilitation
-Plastic surgery
-Podiatric Surgery
-Psychiatry
-Public health and Preventive Medicine
-Radiology
-Radiotherapy
-Respiratory medicine
-Rheumatology
-Stomatology
-Thoracic surgery
-Tropical medicine
-Urology
-Vascular surgery
-Venereology
+INSERT into healthcareweb_specialization values(1,'Accident and emergency medicine');
+INSERT into healthcareweb_specialization values(2,'Allergology');
+INSERT into healthcareweb_specialization values(3,'Anaesthetics');
+INSERT into healthcareweb_specialization values(4,'Biological hematology');
+INSERT into healthcareweb_specialization values(5,'Cardiology');
+INSERT into healthcareweb_specialization values(6,'Child psychiatry');
+INSERT into healthcareweb_specialization values(7,'Clinical biology');
+INSERT into healthcareweb_specialization values(8,'Clinical chemistry');
+INSERT into healthcareweb_specialization values(9,'Clinical neurophysiology');
+INSERT into healthcareweb_specialization values(10,'Craniofacial surgery');
+INSERT into healthcareweb_specialization values(11,'Dental, oral and maxillo-facial surgery');
+INSERT into healthcareweb_specialization values(12,'Dermato-venerology');
+INSERT into healthcareweb_specialization values(13,'Dermatology');
+INSERT into healthcareweb_specialization values(14,'Endocrinology');
+INSERT into healthcareweb_specialization values(15,'Gastro-enterologic surgery');
+INSERT into healthcareweb_specialization values(16,'Gastroenterology');
+INSERT into healthcareweb_specialization values(17,'General hematology');
+INSERT into healthcareweb_specialization values(18,'General Practice');
+INSERT into healthcareweb_specialization values(19,'General surgery');
+INSERT into healthcareweb_specialization values(20,'Geriatrics');
+INSERT into healthcareweb_specialization values(21,'Immunology');
+INSERT into healthcareweb_specialization values(22,'Infectious diseases');
+INSERT into healthcareweb_specialization values(23,'Internal medicine');
+INSERT into healthcareweb_specialization values(24,'Laboratory medicine');
+INSERT into healthcareweb_specialization values(25,'Maxillo-facial surgery');
+INSERT into healthcareweb_specialization values(26,'Microbiology');
+INSERT into healthcareweb_specialization values(27,'Nephrology');
+INSERT into healthcareweb_specialization values(28,'Neuro-psychiatry');
+INSERT into healthcareweb_specialization values(29,'Neurology');
+INSERT into healthcareweb_specialization values(30,'Neurosurgery');
+INSERT into healthcareweb_specialization values(31,'Nuclear medicine');
+INSERT into healthcareweb_specialization values(32,'Obstetrics and gynecology');
+INSERT into healthcareweb_specialization values(33,'Occupational medicine');
+INSERT into healthcareweb_specialization values(34,'Ophthalmology');
+INSERT into healthcareweb_specialization values(35,'Orthopaedics');
+INSERT into healthcareweb_specialization values(36,'Otorhinolaryngology');
+INSERT into healthcareweb_specialization values(37,'Paediatric surgery');
+INSERT into healthcareweb_specialization values(38,'Paediatrics');
+INSERT into healthcareweb_specialization values(39,'Pathology');
+INSERT into healthcareweb_specialization values(40,'Pharmacology');
+INSERT into healthcareweb_specialization values(41,'Physical medicine and rehabilitation');
+INSERT into healthcareweb_specialization values(42,'Plastic surgery');
+INSERT into healthcareweb_specialization values(43,'Podiatric Surgery');
+INSERT into healthcareweb_specialization values(44,'Psychiatry');
+INSERT into healthcareweb_specialization values(45,'Public health and Preventive Medicine');
+INSERT into healthcareweb_specialization values(46,'Radiology');
+INSERT into healthcareweb_specialization values(47,'Radiotherapy');
+INSERT into healthcareweb_specialization values(48,'Respiratory medicine');
+INSERT into healthcareweb_specialization values(49,'Rheumatology');
+INSERT into healthcareweb_specialization values(50,'Stomatology');
+INSERT into healthcareweb_specialization values(51,'Thoracic surgery');
+INSERT into healthcareweb_specialization values(52,'Tropical medicine');
+INSERT into healthcareweb_specialization values(53,'Urology');
+INSERT into healthcareweb_specialization values(54,'Vascular surgery');
+INSERT into healthcareweb_specialization values(55,'Venereology');

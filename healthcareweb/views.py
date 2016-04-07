@@ -4,6 +4,7 @@ from django.core import serializers
 #from healthcareweb.db.mysqlconn import getConnection
 #from healthcareweb.models.doctor import Doctor
 from healthcareweb.models import Doctor
+from healthcareweb.models import Specialization
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http import Http404,HttpRequest,HttpResponse,HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
@@ -116,3 +117,18 @@ def getSearchAutocomplete(request):
 
 	#data = serializers.serialize('json', [list(firstNames)])
 	return HttpResponse(json.dumps(autoCompleteResults))
+
+@require_http_methods(["GET"])
+def getAllSpecializations(request):
+	allSpecializationsOb = Specialization.objects.all()
+	allSpecializations = [];
+	for sp in allSpecializationsOb:
+		#print(c)
+		allSpecializations.append(sp.name)
+	#print(allSpecializations)
+	#data = serializers.serialize('json', [allSpecializations])
+	#json.dumps(data, content_type="application/json")
+	#data = serializers.serialize('json', self.get_queryset())
+	return HttpResponse(json.dumps(allSpecializations), content_type="application/json")
+
+	#return HttpResponse(allSpecializations) 

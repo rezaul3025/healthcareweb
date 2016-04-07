@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^dologin/', views.dologin, name='dologin'),
     url(r'^logout/', views.dologout, name='dologout'),
     url(r'^getsearchautocomplete/', views.getSearchAutocomplete, name='getSearchAutocomplete'),
+    url(r'^specializations/', views.getAllSpecializations, name='getAllSpecializations'),
     url(r'^admin/', admin.site.urls),
 ]

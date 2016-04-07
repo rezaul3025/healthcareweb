@@ -112,10 +112,10 @@
       </div><!-- /.container -->
     </nav><!-- /.navbar -->
 
-    <div class="container" ng-controller="SignUpController">
+    <div class="container" ng-controller="SignUpController" ng-init="getAllspecializations()">
 
       <div class="row row-offcanvas row-offcanvas-right">
-
+{{specializations}}
         <div class="col-xs-12 col-sm-9">
           <p class="pull-right visible-xs">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
@@ -291,11 +291,7 @@
 					{id: 'General Practice', text: 'General Practice'}, { id: 'General surgery', text: 'General surgery' }, { id: 'Geriatrics', text: 'Geriatrics' },
 					{id: 'Immunology', text: 'Immunology'}, { id: 'Infectious diseases', text: 'Infectious diseases' }, { id: 'Internal medicine', text: 'Internal medicine' }];
 
-		$("#specialization").select2({
-  			data: data,
-  			//tokenSeparators: [',', ' ;'],
-  			placeholder: "Select Specializations"
-		})
+		
 
 	</script>
     

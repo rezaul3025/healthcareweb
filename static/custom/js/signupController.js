@@ -1,6 +1,22 @@
 var module = angular.module('Signup', []);
 module.controller('SignUpController', ['$http', '$scope', '$window',  function($http, $scope, $window) {
-	$scope.doSignup = function(doctor){
+	$scope.specializations = [];
+    $scope.getAllspecializations = function(){
+        $http({
+            method : "GET",
+            url : "/specializations/",
+            params:{}
+        }).then(function succes(response) {
+            $scope.specializations = response.data;
+            alert($scope.specializations)
+        }, function error(response) {
+            $scope.error = response.statusText;
+        });
+    }
+
+
+
+    $scope.doSignup = function(doctor){
 		$http({
         	method : "POST",
         	url : "/dosignup/",

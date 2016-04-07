@@ -12,3 +12,6 @@ class Doctor(models.Model):
 	mobile = models.CharField(max_length=20)
 	email = models.CharField("", max_length=120)
 	website = models.TextField()
+
+class Specialization(models.Model):
+	name = models.TextField()
