@@ -57,6 +57,7 @@ def dosignup(request):
 	print(firstName)
 	lastName = request.POST.get("lastName");
 	specialization = request.POST.get("specialization");
+	print(specialization)
 	addrLine1 = request.POST.get("addrLine1");
 	addrLine2 = request.POST.get("addrLine2");
 	postCode = request.POST.get("postCode");

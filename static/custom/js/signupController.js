@@ -27,7 +27,7 @@ module.controller('SignUpController', ['$http', '$scope', '$window',  function($
         		title : doctor.title,
         		firstName: doctor.firstName,
         		lastName:doctor.lastName,
-        		specialization:doctor.specialization,
+        		specialization:energy = doctor.specialization.join(),
         		addrLine1:doctor.line1,
         		addrLine2:doctor.line2,
         		postCode:doctor.postCode,
