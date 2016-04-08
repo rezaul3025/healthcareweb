@@ -5,6 +5,24 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
 		
 		return key;
 	}*/
+	$scope.simplesearchViewTh = true;
+	$scope.simplesearchViewThList = false;
+
+	$scope.changeSimpleSearchView = function(){
+		if($scope.simplesearchViewTh){
+			$scope.simplesearchViewTh = false;
+		}
+		else{
+			$scope.simplesearchViewTh = true;
+		}
+
+		if($scope.simplesearchViewThList){
+			$scope.simplesearchViewThList = false;
+		}
+		else{
+			$scope.simplesearchViewThList = true;
+		}
+	}
 
 	$scope.getSearchKey = function(val) {
     return $http.get('getsearchautocomplete', {

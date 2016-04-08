@@ -138,16 +138,24 @@
             <div class="row" style="margin-bottom:10px " ng-if="simpleSearchResults.length">
             
             <div class="col-xs-6 col-lg-2">
-              <a href="#"><span class="glyphicon glyphicon-th"></span></a>
-              <a href="#"><span class="glyphicon glyphicon-th-list"></span></a>
+              <a href="#" ng-click="changeSimpleSearchView()"><span class="glyphicon glyphicon-th"></span></a>
+              <a href="#" ng-click="changeSimpleSearchView()"><span class="glyphicon glyphicon-th-list"></span></a>
             </div>
             <div class="col-xs-6 col-lg-3">
               <p> Total item found  <span class="label label-primary" ng-bind="simpleSearchResults.length">{{simpleSearchResults.length}}</span></p>
             </div>
             
           </div>
+
+          <div ng-repeat="docarr in simpleSearchResults" ng-if="simpleSearchResults.length &amp;&amp; simplesearchViewThList" class="panel panel-default">
+              <div class="panel-body">
+                <h3 ng-bind="docarr.fields.firstName+' '+docarr.fields.lastName">Thumbnail label</h3>
+                  <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. <a href="#"> Etiam porta sem malesuada </a> magna mollis euismod. Donec sed odio dui.</p>
+                  <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-primary" role="button">Button</a></p>
+              </div>
+          </div>
           
-          <div class="row" ng-if="simpleSearchResults.length">
+          <div class="row" ng-if="simpleSearchResults.length &amp;&amp; simplesearchViewTh">
             <div class="col-xs-6 col-lg-4" ng-repeat="docarr in simpleSearchResults">
               <!--h2 ng-bind="docarr.fields.firstName+' '+docarr.fields.lastName">Heading</h2>
               <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. <a href="#"> Etiam porta sem malesuada </a> magna mollis euismod. Donec sed odio dui. </p>
