@@ -115,7 +115,6 @@
     <div class="container" ng-controller="SignUpController" ng-init="getAllspecializations()">
 
       <div class="row row-offcanvas row-offcanvas-right">
-{{specializations}}
         <div class="col-xs-12 col-sm-9">
           <p class="pull-right visible-xs">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
@@ -159,7 +158,8 @@
 							  <div class="form-group">
 							    <label for="specialization" class="col-sm-2 control-label">Specialization</label>
 							    <div class="col-sm-10">
-							      <input type="text" ng-model="doctor.specialization" class="form-control" multiple="multiple" id="specialization" />
+							      <select  ng-model="doctor.specialization" class="form-control specialization" multiple="multiple" id="specialization" >
+							      </select>
 							    </div>
 							  </div>
 							  <h4>Address</h4>
@@ -291,7 +291,70 @@
 					{id: 'General Practice', text: 'General Practice'}, { id: 'General surgery', text: 'General surgery' }, { id: 'Geriatrics', text: 'Geriatrics' },
 					{id: 'Immunology', text: 'Immunology'}, { id: 'Infectious diseases', text: 'Infectious diseases' }, { id: 'Internal medicine', text: 'Internal medicine' }];
 
-		
+		/*$(".specialization").select2({
+		  ajax: {
+		    url: "/specializations",
+		    dataType: 'json',
+		    delay: 250,
+		    data: function (params) {
+		      return {
+		        queryStr: params.term, // search term
+		        page: params.page
+		      };
+		    },
+		    processResults: function (data, params) {
+		      // parse the results into the format expected by Select2
+		      // since we are using custom formatting functions we do not need to
+		      // alter the remote JSON data, except to indicate that infinite
+		      // scrolling can be used
+		      alert(data.length)
+		      params.page = params.page || 1;
+
+		      return {
+		        results: data,
+		        pagination: {
+		          more: (params.page * 30) < 10
+		        }
+		      };
+		    },
+		    cache: true
+		  },
+		  escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+		  minimumInputLength: 1,
+		  templateResult: '', // omitted for brevity, see the source of this page
+		 templateSelection: '' // omitted for brevity, see the source of this page
+		}); */
+
+		$('.specialization').select2({
+    ajax: {
+        url: "/specializations",
+        dataType: 'json',
+        quietMillis: 100,
+        data: function (params) {
+           return {
+		        queryStr: typeof params.term != 'undefined' ? params.term:'', // search term
+		        page: params.page
+		      };
+        },
+        processResults: function (data,  params) {
+          var results = [];
+          $.each(data, function(index, item){
+            results.push({
+              id: item,
+              text: item
+            });
+          });
+          params.page = params.page || 1;
+
+          return {
+              results: results,
+		        pagination: {
+		          more: (params.page * 30) < data.length
+		        }
+          };
+        }
+    }
+});
 
 	</script>
     

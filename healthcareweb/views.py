@@ -123,7 +123,8 @@ def getSearchAutocomplete(request):
 
 @require_http_methods(["GET"])
 def getAllSpecializations(request):
-	allSpecializationsOb = Specialization.objects.all()
+	queryStr = request.GET['queryStr']
+	allSpecializationsOb = Specialization.objects.filter(Q(name__icontains=queryStr))
 	allSpecializations = [];
 	for sp in allSpecializationsOb:
 		allSpecializations.append(sp.name)

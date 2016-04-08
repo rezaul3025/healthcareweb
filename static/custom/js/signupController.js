@@ -5,10 +5,10 @@ module.controller('SignUpController', ['$http', '$scope', '$window',  function($
         $http({
             method : "GET",
             url : "/specializations/",
-            params:{}
+            params:{queryStr:'bio'}
         }).then(function succes(response) {
-            $scope.specializations = response.data;
-            alert($scope.specializations)
+            //$scope.specializations = response.data;
+            //alert($scope.specializations)
         }, function error(response) {
             $scope.error = response.statusText;
         });
