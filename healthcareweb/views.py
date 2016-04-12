@@ -14,6 +14,7 @@ from django.shortcuts import redirect
 import json
 from django.db import connection
 from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 
@@ -137,13 +138,22 @@ def simpleSearch(request):
 	queryStr = request.GET['queryStr']
 	data = []
 	try:
-		doctors = Doctor.objects.filter(Q(specialization__icontains=queryStr) | 
+		doctor_list = Doctor.objects.filter(Q(specialization__icontains=queryStr) | 
 			Q(firstName__startswith=queryStr) | Q(lastName__startswith=queryStr) |
 			Q(city__startswith=queryStr))
-
-		data = serializers.serialize('json', doctors)
+		paginator = Paginator(doctor_list, 2) # Show 25 contacts per page
+		page = request.GET.get('page')
+		doctors = paginator.page(page)
+	except PageNotAnInteger:
+		# If page is not an integer, deliver first page.
+		doctors = paginator.page(1)
+	except EmptyPage:
+		# If page is out of range (e.g. 9999), deliver last page of results.
+		doctors = paginator.page(paginator.num_pages)
 	except Exception as ex:
 		print(ex)
+	
+	data = serializers.serialize('json', doctors)
 
 	return HttpResponse(data, content_type="application/json")
 

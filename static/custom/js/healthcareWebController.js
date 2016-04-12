@@ -38,7 +38,8 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
   	 $http({
             method : "GET",
             url : "/simplesearch/",
-            params:{queryStr:item}
+            params:{queryStr:item,
+            		page:1}
         }).then(function succes(response) {
             $scope.simpleSearchResults = response.data;
             //alert($scope.simpleSearchResults)
