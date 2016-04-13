@@ -79,6 +79,19 @@
 		    width: 50%; /* 6 columns */
 		  }
 		}
+		
+		if it's not present, don't show loader */
+.no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	padding-top:200px;
+	background: url({% static "images/ajax-loader.gif" %}) top no-repeat #fff;
+}
    </style>
   </head>
 
@@ -128,6 +141,7 @@
           <p class="pull-right visible-xs">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
+         
           <div class="jumbotron">
             <div class="form-group has-feedback">
               <input type="text" class="form-control input-lg" ng-model="search" uib-typeahead="key for key in getSearchKey($viewValue)" placeholder="Search doctor by Name, Speclization, City" id="inputSuccess2"
@@ -135,6 +149,10 @@
               <span class="glyphicon glyphicon-search form-control-feedback"></span>
             </div>
           </div>
+           <div class="se-pre-con"></div>
+          {% if doctors.number = 0 %}
+         	 <center><img src="{% static "images/ajax-loader.gif" %}"></img></center>
+          {% endif %}
           Page {{ doctors.number }} of {{ doctors.paginator.num_pages }}
           {% if doctors.number > 0 %}
             <div class="row" style="margin-bottom:10px ">
@@ -188,7 +206,7 @@
           <nav>
   				<ul class="pager">
 			        {% if doctors.has_previous %}
-			           <li class="previous"> <a href="?queryStr={{queryStr}}&page={{ doctors.previous_page_number }}"> <span aria-hidden="true">&larr;</span> Previous</a></li>
+			           <li class="previous"> <a href="?queryStr={{queryStr}}&page={{ doctors.previous_page_number }}"> <span aria-hidden="true">&larr;</span> <b>Previous </b></a></li>
 			        {% endif %}
 					
 					<li>
@@ -198,7 +216,7 @@
 					</li>
 					
 			        {% if doctors.has_next %}
-			           <li class="next"> <a href="?queryStr={{queryStr}}&page={{doctors.next_page_number}}">Next <span aria-hidden="true">&rarr;</span></a> </li>
+			           <li class="next"> <a href="?queryStr={{queryStr}}&page={{doctors.next_page_number}}"><b>Next </b> <span aria-hidden="true">&rarr;</span></a> </li>
 			        {% endif %}
 			   </ul>
 			</nav>
@@ -239,6 +257,11 @@
     <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
     <script src="{% static "bootstrap/js/ui-bootstrap-tpls-1.3.0.min.js" %}"></script>
     <script src="{% static "custom/js/healthcareWebController.js" %}"></script>
-    
+    <script type="text/javascript">
+	$(window).load(function() {
+		// Animate loader off screen
+		$(".se-pre-con").fadeOut("fast");;
+	});
+    </script>
   </body>
 </html>
