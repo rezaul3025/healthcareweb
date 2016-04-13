@@ -327,35 +327,35 @@
 		}); */
 
 		$('.specialization').select2({
-    ajax: {
-        url: "/specializations",
-        dataType: 'json',
-        quietMillis: 100,
-        data: function (params) {
-           return {
-		        queryStr: typeof params.term != 'undefined' ? params.term:'', // search term
-		        page: params.page
-		      };
-        },
-        processResults: function (data,  params) {
-          var results = [];
-          $.each(data, function(index, item){
-            results.push({
-              id: item,
-              text: item
-            });
-          });
-          params.page = params.page || 1;
-
-          return {
-              results: results,
-		        pagination: {
-		          more: (params.page * 30) < data.length
+		    ajax: {
+		        url: "/specializations",
+		        dataType: 'json',
+		        quietMillis: 100,
+		        data: function (params) {
+		           return {
+				        queryStr: typeof params.term != 'undefined' ? params.term:'', // search term
+				        page: params.page
+				      };
+		        },
+		        processResults: function (data,  params) {
+		          var results = [];
+		          $.each(data, function(index, item){
+		            results.push({
+		              id: item,
+		              text: item
+		            });
+		          });
+		          params.page = params.page || 1;
+		
+		          return {
+		              results: results,
+				        pagination: {
+				          more: (params.page * 30) < data.length
+				        }
+		          };
 		        }
-          };
-        }
-    }
-});
+		    }
+		});
 
 	</script>
     
