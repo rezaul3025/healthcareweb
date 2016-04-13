@@ -25,7 +25,7 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
 	}
 
 	$scope.getSearchKey = function(val) {
-    return $http.get('getsearchautocomplete', {
+    return $http.get('/getsearchautocomplete/', {
       params: {
         queryStr: val
       }
@@ -35,7 +35,9 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
   };
 
   $scope.getSimpleResult = function(item, model, label, event){
-  	 $http({
+	  
+	  $window.location.href = '/simplesearch?queryStr='+item+"&page=0";
+  	/* $http({
             method : "GET",
             url : "/simplesearch/",
             params:{queryStr:item,
@@ -45,7 +47,7 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
             //alert($scope.simpleSearchResults)
         }, function error(response) {
            // $scope.error = response.statusText;
-        });
+        });*/
   };
 
 	

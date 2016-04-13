@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, RequestContext, render_to_response
 from django.core import serializers
 #from healthcareweb.db.mysqlconn import getConnection
 #from healthcareweb.models.doctor import Doctor
@@ -7,6 +7,7 @@ from healthcareweb.models import Doctor
 from healthcareweb.models import Specialization
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http import Http404,HttpRequest,HttpResponse,HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -137,12 +138,14 @@ def getAllSpecializations(request):
 def simpleSearch(request):
 	queryStr = request.GET['queryStr']
 	data = []
+	doctor_l = {}
 	try:
 		doctor_list = Doctor.objects.filter(Q(specialization__icontains=queryStr) | 
 			Q(firstName__startswith=queryStr) | Q(lastName__startswith=queryStr) |
 			Q(city__startswith=queryStr))
-		paginator = Paginator(doctor_list, 2) # Show 25 contacts per page
-		page = request.GET.get('page')
+		paginator = Paginator(doctor_list, 5) # Show 2 contacts per page
+		page = int(request.GET.get('page'))
+		page = page
 		doctors = paginator.page(page)
 	except PageNotAnInteger:
 		# If page is not an integer, deliver first page.
@@ -153,7 +156,13 @@ def simpleSearch(request):
 	except Exception as ex:
 		print(ex)
 	
-	data = serializers.serialize('json', doctors)
+	#data = serializers.serialize('json', doctors)
+	print(doctors)
+	#request.session['doctors'] = doctors
+	#url = reverse('index.html', kwargs={'doctors': doctors})
+	doctor_l['doctors'] = doctors
+	context = RequestContext(request)
+	return render(request, 'index.html',{'doctors':doctors, 'queryStr':queryStr}) #render(request, 'index.html', {'doctors': doctors}) #
 
-	return HttpResponse(data, content_type="application/json")
+	#return HttpResponse(data, content_type="application/json")
 
