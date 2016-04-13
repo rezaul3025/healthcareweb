@@ -36,7 +36,7 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
 
   $scope.getSimpleResult = function(item, model, label, event){
 	  
-	  $window.location.href = '/simplesearch?queryStr='+item+"&page=0";
+	  $window.location.href = '/simplesearch?queryStr='+item+"&page=1";
   	/* $http({
             method : "GET",
             url : "/simplesearch/",

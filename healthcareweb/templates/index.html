@@ -185,21 +185,23 @@
              {% endfor %}
           </div><!--/row--> 
           
-          <div class="pagination">
-			    <span class="step-links">
+          <nav>
+  				<ul class="pager">
 			        {% if doctors.has_previous %}
-			            <a href="/simplesearch?queryStr={{queryStr}}&page={{ doctors.previous_page_number }}">previous</a>
+			           <li class="previous"> <a href="?queryStr={{queryStr}}&page={{ doctors.previous_page_number }}"> <span aria-hidden="true">&larr;</span> Previous</a></li>
 			        {% endif %}
-			
-			        <span class="current">
-			            Page {{ doctors.number }} of {{ doctors.paginator.num_pages }}.
-			        </span>
-			
+					
+					<li>
+				        <span class="current">
+				             Page {{ doctors.number }} of {{ doctors.paginator.num_pages }}. 
+				        </span>
+					</li>
+					
 			        {% if doctors.has_next %}
-			            <a href="/simplesearch?queryStr={{queryStr}}&page={{doctors.next_page_number}}">next</a>
+			           <li class="next"> <a href="?queryStr={{queryStr}}&page={{doctors.next_page_number}}">Next <span aria-hidden="true">&rarr;</span></a> </li>
 			        {% endif %}
-			    </span>
-			</div>
+			   </ul>
+			</nav>
           
         </div><!--/.col-xs-12.col-sm-9-->
 

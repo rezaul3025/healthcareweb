@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, RequestContext, render_to_response
+from django.shortcuts import render, RequestContext,render_to_response
 from django.core import serializers
 #from healthcareweb.db.mysqlconn import getConnection
 #from healthcareweb.models.doctor import Doctor
@@ -134,18 +134,14 @@ def getAllSpecializations(request):
 	return HttpResponse(json.dumps(allSpecializations), content_type="application/json")
 
 
-@require_http_methods(["GET"])
 def simpleSearch(request):
 	queryStr = request.GET['queryStr']
-	data = []
-	doctor_l = {}
 	try:
 		doctor_list = Doctor.objects.filter(Q(specialization__icontains=queryStr) | 
 			Q(firstName__startswith=queryStr) | Q(lastName__startswith=queryStr) |
 			Q(city__startswith=queryStr))
 		paginator = Paginator(doctor_list, 5) # Show 2 contacts per page
-		page = int(request.GET.get('page'))
-		page = page
+		page = request.GET.get('page')
 		doctors = paginator.page(page)
 	except PageNotAnInteger:
 		# If page is not an integer, deliver first page.
@@ -158,11 +154,8 @@ def simpleSearch(request):
 	
 	#data = serializers.serialize('json', doctors)
 	print(doctors)
-	#request.session['doctors'] = doctors
-	#url = reverse('index.html', kwargs={'doctors': doctors})
-	doctor_l['doctors'] = doctors
-	context = RequestContext(request)
-	return render(request, 'index.html',{'doctors':doctors, 'queryStr':queryStr}) #render(request, 'index.html', {'doctors': doctors}) #
+	
+	return render(request, 'index.html', {'doctors': doctors, 'queryStr':queryStr}) #render_to_response('index.html',doctor_l, context) # #
 
 	#return HttpResponse(data, content_type="application/json")
 
