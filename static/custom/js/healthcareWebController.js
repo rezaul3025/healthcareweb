@@ -49,6 +49,12 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
            // $scope.error = response.statusText;
         });*/
   };
+  
+  $scope.ratingPoints = [{"point":1, "isActive":false},
+                         {"point":2, "isActive":false},
+                         {"point":3, "isActive":false},
+                         {"point":4, "isActive":false},
+                         {"point":5, "isActive":false}]
 
 	
 }])
