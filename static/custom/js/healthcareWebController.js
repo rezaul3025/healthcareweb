@@ -58,7 +58,7 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
  
   $scope.ratingPointchnage = function(value, point){
 	  if(!value){
-		  for(var r=point; r>0;r--){
+		  for(var r=point;r<$scope.ratingPoints.length;r++){
 			  $scope.ratingPoints[r].isActive = value;
 		  } 
 	  }

@@ -235,7 +235,7 @@
             <a href="#" class="list-group-item">Link</a>
             <a href="#" class="list-group-item">Link</a>
             <a href="#" class="list-group-item">Link</a>
-            <p href="#" class="list-group-item"><sapn ng-repeat="p in ratingPoints"><a ng-click="ratingPointchnage(false,ratingPoints.length-1 )" href="#" ng-attr-title="test" ng-if="p.isActive" ><span class="glyphicon glyphicon-star"></span></a><a href="#" ng-click="ratingPointchnage(true,$index+1 )" ng-attr-title="test" ng-if="!p.isActive" ><span class="glyphicon glyphicon-star-empty"></span></a>&nbsp;</sapn></p>
+            <p href="#" class="list-group-item"><sapn ng-repeat="p in ratingPoints"><a ng-click="ratingPointchnage(false,$index)" href="#" ng-attr-title="test" ng-if="p.isActive" ><span class="glyphicon glyphicon-star"></span></a><a href="#" ng-click="ratingPointchnage(true,$index+1 )" ng-attr-title="test" ng-if="!p.isActive" ><span class="glyphicon glyphicon-star-empty"></span></a>&nbsp;</sapn></p>
           </div>
         </div><!--/.sidebar-offcanvas-->
       </div><!--/row-->
