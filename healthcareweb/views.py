@@ -167,13 +167,19 @@ def simpleSearch(request):
 
 	#return HttpResponse(data, content_type="application/json")
 	
-	
+@require_http_methods(["GET"])	
 def advanceSearch(request):
-	queryStr = request.GET['queryStr']
+	specializationsStr = request.GET['specializationsStr']
 	try:
-		doctor_list = Doctor.objects.filter(Q(specialization__icontains=queryStr) | 
-			Q(firstName__startswith=queryStr) | Q(lastName__startswith=queryStr) |
-			Q(city__startswith=queryStr))
+		#doctor_list = Doctor.objects.filter(Q(specialization__icontains=queryStr) | 
+		#	Q(firstName__startswith=queryStr) | Q(lastName__startswith=queryStr) |
+		#	Q(city__startswith=queryStr))
+		doctor_list = []
+		specializations = Specialization.objects.filter(name__in=specializationsStr.split(","))
+		for sp in specializations:
+			doctor_list.append(sp.doctors.all())	
+		
+		print(doctor_list)
 		paginator = Paginator(doctor_list, 5) # Show 2 contacts per page
 		page = request.GET.get('page')
 		doctors = paginator.page(page)
@@ -185,11 +191,12 @@ def advanceSearch(request):
 		doctors = paginator.page(paginator.num_pages)
 	except Exception as ex:
 		print(ex)
-	
-	#data = serializers.serialize('json', doctors)
 	print(doctors)
 	
-	return render(request, 'index.html', {'doctors': doctors, 'queryStr':queryStr}) #render_to_response('index.html',doctor_l, context) # #
+	#data = serializers.serialize('json', doctors)
+	
+	
+	return render(request, 'index.html', {'doctors': doctors, 'specializationsStr':specializationsStr}) #render_to_response('index.html',doctor_l, context) # #
 
 	#return HttpResponse(data, content_type="application/json")
 

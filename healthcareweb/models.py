@@ -16,5 +16,5 @@ class Doctor(models.Model):
 
 class Specialization(models.Model):
 	name = models.TextField()
-	doctors = models.ManyToManyField(Doctor)
+	doctors = models.ManyToManyField(Doctor,related_name="specializations")
 	

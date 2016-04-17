@@ -28,5 +28,6 @@ urlpatterns = [
     url(r'^getsearchautocomplete/', views.getSearchAutocomplete, name='getSearchAutocomplete'),
     url(r'^specializations/', views.getAllSpecializations, name='getAllSpecializations'),
     url(r'^simplesearch/', views.simpleSearch, name='simpleSearch'),
+    url(r'^advancesearch/', views.advanceSearch, name='advanceSearch'),
     url(r'^admin/', admin.site.urls),
 ]
