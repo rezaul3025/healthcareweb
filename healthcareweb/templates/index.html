@@ -82,6 +82,12 @@
 		  }
 		}
 		
+		.select2-selection__rendered{
+  word-wrap: break-word !important;
+  text-overflow: inherit !important;
+  white-space: normal !important;
+}
+		
 		if it's not present, don't show loader */
 .no-js #loader { display: none;  }
 .js #loader { display: block; position: absolute; left: 100px; top: 0; }
@@ -146,7 +152,7 @@
          
           <div class="jumbotron">
             <div class="form-group has-feedback">
-              <input type="text" class="form-control input-lg" ng-model="search" uib-typeahead="key for key in getSearchKey($viewValue)" placeholder="Search doctor by Name, Speclization, City" id="inputSuccess2"
+              <input type="text" class="form-control input-lg" ng-model="search.main" uib-typeahead="key for key in getSearchKey($viewValue)" placeholder="Search doctor by Name, Speclization, City" id="inputSuccess2"
               typeahead-on-select="getSimpleResult($item, $model, $label, $event)" />
               <span class="glyphicon glyphicon-search form-control-feedback"></span>
             </div>
@@ -247,7 +253,7 @@
 	         	<div class="form-group">
 							    <label for="specialization" class="control-label">Specialization</label>
 							    
-							      <select  ng-model="doctor.specialization" class="form-control specialization" multiple="multiple" id="specialization" >
+							      <select  ng-model="doctor.specialization" class="form-control col-sm-3 specialization" multiple="multiple" id="specialization" >
 							      </select>
 							   
 							  </div>
@@ -255,7 +261,7 @@
 	         <div class="form-group">
 							    <label for="city" class="control-label">City</label>
 							    
-							      <select  ng-model="doctor.city" class="form-control specialization" multiple="multiple" id="city" >
+							      <select ng-change="search()" ng-model="doctor.city" class="form-control specialization" multiple="multiple" id="city" >
 							      </select>
 							   
 							  </div>

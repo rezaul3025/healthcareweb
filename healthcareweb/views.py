@@ -67,9 +67,17 @@ def dosignup(request):
 	mobile = request.POST.get("mobile");
 	email = request.POST.get("email");
 	website = request.POST.get("website");
-	doctor = Doctor.objects.create(title=title,firstName=firstName,lastName=lastName,specialization=specialization,
+	doctor = Doctor.objects.create(title=title,firstName=firstName,lastName=lastName,
 		addrLine1=addrLine1,addrLine2=addrLine2, postCode=postCode,city=city,mobile=mobile,email=email,website=website)
-
+	
+	specialization = specialization.split(",")
+	print(specialization)
+	specializations = Specialization.objects.filter(name__in=specialization)
+	print(len(specializations))
+	for sp in specializations:
+		sp.doctors.add(doctor)
+		sp.save()
+		print(sp.name)
 	user = User.objects.create_user(username=request.POST['userName'], password = request.POST['password'], email = email, first_name=firstName, last_name = lastName)
 	#user.save()
 	#print(d.title)
@@ -135,6 +143,32 @@ def getAllSpecializations(request):
 
 
 def simpleSearch(request):
+	queryStr = request.GET['queryStr']
+	try:
+		doctor_list = Doctor.objects.filter(Q(specialization__icontains=queryStr) | 
+			Q(firstName__startswith=queryStr) | Q(lastName__startswith=queryStr) |
+			Q(city__startswith=queryStr))
+		paginator = Paginator(doctor_list, 5) # Show 2 contacts per page
+		page = request.GET.get('page')
+		doctors = paginator.page(page)
+	except PageNotAnInteger:
+		# If page is not an integer, deliver first page.
+		doctors = paginator.page(1)
+	except EmptyPage:
+		# If page is out of range (e.g. 9999), deliver last page of results.
+		doctors = paginator.page(paginator.num_pages)
+	except Exception as ex:
+		print(ex)
+	
+	#data = serializers.serialize('json', doctors)
+	print(doctors)
+	
+	return render(request, 'index.html', {'doctors': doctors, 'queryStr':queryStr}) #render_to_response('index.html',doctor_l, context) # #
+
+	#return HttpResponse(data, content_type="application/json")
+	
+	
+def advanceSearch(request):
 	queryStr = request.GET['queryStr']
 	try:
 		doctor_list = Doctor.objects.filter(Q(specialization__icontains=queryStr) | 

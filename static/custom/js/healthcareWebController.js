@@ -68,6 +68,10 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
 		  }
 	  }
   }
+  
+  $scope.search = function(){
+	  alert("hello");
+  }
 
 	
 }])
