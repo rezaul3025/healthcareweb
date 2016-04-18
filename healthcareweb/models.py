@@ -18,3 +18,8 @@ class Specialization(models.Model):
 	name = models.TextField()
 	doctors = models.ManyToManyField(Doctor,related_name="specializations")
 	
+class Rating(models.Model):
+	points = models.IntegerField(0,max_length=2)
+	comments = models.TextField()
+	doctor = models.ManyToManyField(Doctor,related_name="rating")	
+	
