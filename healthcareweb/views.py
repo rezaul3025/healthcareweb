@@ -145,8 +145,7 @@ def getAllSpecializations(request):
 def simpleSearch(request):
 	queryStr = request.GET['queryStr']
 	try:
-		doctor_list = Doctor.objects.filter(Q(specialization__icontains=queryStr) | 
-			Q(firstName__startswith=queryStr) | Q(lastName__startswith=queryStr) |
+		doctor_list = Doctor.objects.filter(Q(firstName__startswith=queryStr) | Q(lastName__startswith=queryStr) |
 			Q(city__startswith=queryStr))
 		paginator = Paginator(doctor_list, 5) # Show 2 contacts per page
 		page = request.GET.get('page')
