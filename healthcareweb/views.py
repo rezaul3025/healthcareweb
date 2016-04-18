@@ -169,6 +169,7 @@ def simpleSearch(request):
 @require_http_methods(["GET"])	
 def advanceSearch(request):
 	specializationsStr = request.GET['specializationsStr']
+	cityStr = request.GET['cityStr']
 	try:
 		#doctor_list = Doctor.objects.filter(Q(specialization__icontains=queryStr) | 
 		#	Q(firstName__startswith=queryStr) | Q(lastName__startswith=queryStr) |
@@ -176,7 +177,7 @@ def advanceSearch(request):
 		doctor_list = []
 		specializations = Specialization.objects.filter(name__in=specializationsStr.split(","))
 		for sp in specializations:
-			doctor_list.append(sp.doctors.all())	
+			doctor_list.append(sp.doctors.filter(city=cityStr))	
 		
 		print(doctor_list)
 		paginator = Paginator(doctor_list, 5) # Show 2 contacts per page

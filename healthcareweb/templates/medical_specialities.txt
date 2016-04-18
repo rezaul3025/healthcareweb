@@ -53,3 +53,12 @@ INSERT into healthcareweb_specialization values(52,'Tropical medicine');
 INSERT into healthcareweb_specialization values(53,'Urology');
 INSERT into healthcareweb_specialization values(54,'Vascular surgery');
 INSERT into healthcareweb_specialization values(55,'Venereology');
+
+
+
+
+#Get doctors by sp and city and rating
+SELECT d.*, sp.* from healthcareweb_doctor d 
+INNER JOIN healthcareweb_specialization_doctors std on d.id = std.doctor_id
+INNER JOIN healthcareweb_specialization sp on sp.id = std.specialization_id
+Where sp.name IN ('Allergology','Cardiology') and d.city in ('comilla','e')
