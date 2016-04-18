@@ -16,11 +16,11 @@ class Doctor(models.Model):
 
 class Specialization(models.Model):
 	name = models.TextField()
-	doctors = models.ManyToManyField(Doctor,related_name="specializations")
+	doctors = models.ManyToManyField(Doctor)
 	
 class Rating(models.Model):
 	points = models.IntegerField(0)
 	userEmail = models.CharField(max_length=120)
 	comments = models.TextField("")
-	doctor = models.ManyToManyField(Doctor,related_name="rating")	
+	doctor = models.ManyToManyField(Doctor)	
 	
