@@ -266,7 +266,7 @@
 	         <div class="form-group">
 							    <label for="city" class="control-label">City</label>
 							    
-							      <select ng-change="search()" ng-model="doctor.city" class="form-control specialization" multiple="multiple" id="city" >
+							      <select ng-change="search()" ng-model="doctor.city" class="form-control cities" multiple="multiple" id="city" >
 							      </select>
 							   
 							  </div>
@@ -310,6 +310,37 @@
 		$('.specialization').select2({
 		    ajax: {
 		        url: "/specializations",
+		        dataType: 'json',
+		        quietMillis: 100,
+		        data: function (params) {
+		           return {
+				        queryStr: typeof params.term != 'undefined' ? params.term:'', // search term
+				        page: params.page
+				      };
+		        },
+		        processResults: function (data,  params) {
+		          var results = [];
+		          $.each(data, function(index, item){
+		            results.push({
+		              id: item,
+		              text: item
+		            });
+		          });
+		          params.page = params.page || 1;
+		
+		          return {
+		              results: results,
+				        pagination: {
+				          more: (params.page * 30) < data.length
+				        }
+		          };
+		        }
+		    }
+		});
+		
+		$('.cities').select2({
+		    ajax: {
+		        url: "/cities",
 		        dataType: 'json',
 		        quietMillis: 100,
 		        data: function (params) {

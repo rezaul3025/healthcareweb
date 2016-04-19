@@ -95,7 +95,7 @@ def getSearchAutocomplete(request):
 	queryStr = queryStr.replace('\'', '').replace('%', '')
 	args = [queryStr+'%']
 	print(queryStr)
-	autoCompleteResults = []
+	autoCompleteResults = set()
 
 	fnameSQL = 'SELECT  firstName FROM healthcareweb_doctor WHERE firstName LIKE %s'
 	cursor.execute(fnameSQL,args)
@@ -103,7 +103,7 @@ def getSearchAutocomplete(request):
 	#Doctor.objects.raw('SELECT  * FROM healthcareweb_doctor WHERE firstName LIKE \'%s\'' % queryStr)
 	for fn in firstNames:
 		print(fn)
-		autoCompleteResults.append(fn[0])
+		autoCompleteResults.add(fn[0])
 
 	#lastNames =  Doctor.objects.raw('SELECT  * FROM healthcareweb_doctor WHERE lastName LIKE \'%s\'' % queryStr)
 	lnameSQL = 'SELECT  lastName FROM healthcareweb_doctor WHERE lastName LIKE %s'
@@ -111,7 +111,7 @@ def getSearchAutocomplete(request):
 	lastNames =  cursor.fetchall()
 	for ln in lastNames:
 		print(ln)
-		autoCompleteResults.append(ln[0])
+		autoCompleteResults.add(ln[0])
 
 	#specializations =  Doctor.objects.raw('SELECT  * FROM healthcareweb_doctor WHERE specialization LIKE \'%s\'' % queryStr)
 	specializationSQL = 'SELECT  name FROM healthcareweb_specialization WHERE name LIKE %s'
@@ -119,7 +119,7 @@ def getSearchAutocomplete(request):
 	specializations =  cursor.fetchall()
 	for s in specializations:
 		print(s)
-		autoCompleteResults.append(s[0])
+		autoCompleteResults.add(s[0])
 	
 	#citis =  Doctor.objects.raw('SELECT  * FROM healthcareweb_doctor WHERE city LIKE \'%s\'' % queryStr)
 	citySQL = 'SELECT  city FROM healthcareweb_doctor WHERE city LIKE %s'
@@ -127,19 +127,28 @@ def getSearchAutocomplete(request):
 	citis =  cursor.fetchall()
 	for c in citis:
 		print(c)
-		autoCompleteResults.append(c[0])
+		autoCompleteResults.add(c[0])
 
 	#data = serializers.serialize('json', [list(firstNames)])
-	return HttpResponse(json.dumps(autoCompleteResults), content_type="application/json")
+	return HttpResponse(json.dumps(list(autoCompleteResults)), content_type="application/json")
 
 @require_http_methods(["GET"])
 def getAllSpecializations(request):
 	queryStr = request.GET['queryStr']
 	allSpecializationsOb = Specialization.objects.filter(Q(name__icontains=queryStr))
-	allSpecializations = [];
+	allSpecializations = []
 	for sp in allSpecializationsOb:
 		allSpecializations.append(sp.name)
 	return HttpResponse(json.dumps(allSpecializations), content_type="application/json")
+
+@require_http_methods(["GET"])
+def getAllCities(request):
+	queryStr = request.GET['queryStr']
+	doctorOb = Doctor.objects.filter(Q(city__icontains=queryStr))
+	cities = set()
+	for d in doctorOb:
+		cities.add(d.city)
+	return HttpResponse(json.dumps(list(cities)), content_type="application/json")
 
 
 def simpleSearch(request):
