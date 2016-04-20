@@ -30,5 +30,6 @@ urlpatterns = [
     url(r'^cities/', views.getAllCities, name='getAllCities'),
     url(r'^simplesearch/', views.simpleSearch, name='simpleSearch'),
     url(r'^advancesearch/', views.advanceSearch, name='advanceSearch'),
+    url(r'^getadvancedsearchparams/', views.getAdvancedSearchParams, name='getAdvancedSearchParams'),
     url(r'^admin/', admin.site.urls),
 ]
