@@ -10,7 +10,7 @@ module.directive('hcComboDiv', function () {
            // var field = cg.getPropertyOrDefault(attrs, "cgField", hpo);
             //var errors = cg.getPropertyOrDefault(attrs, "cgErrorMessages", "clinicalInfoHpoMessages");
             //return cgDirectives.inputTemplateSelect(form, field, errors, errors, "cg-hpo=''", "Select hpo terms", element);
-        	return '<input type="text" name="specializations" hc-combo="" id="specializations" />';
+        	return '<select type="text" name="'+attrs.name+'" hc-combo="" id="'+attrs.id+'" ></select>';
         	
         }
     	
@@ -22,7 +22,8 @@ module.directive('hcCombo',['hcService', function (hcService) {
         restrict: 'A',
         require: 'ngModel',
         link: function (scope, element, attrs, ngModel) {
-            var selectParams = hcService.getRemoteMultiPagedConfig(element, ngModel, 'Select sp1 terms', true, "/specializations", 10, {});
+        	
+            var selectParams = hcService.getRemoteMultiPagedConfig(element, ngModel, 'Select sp1 terms', true, "/specializations", 5);
             
             hcService.generateSelect2Box(element, selectParams, scope, ngModel, attrs.ngModel);
             

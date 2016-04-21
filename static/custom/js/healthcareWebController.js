@@ -72,13 +72,13 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
   $scope.search = function(){
 	  alert("hello");
   }
-
+  $scope.search.specialization = 'bio';
   $scope.getAdvanceSearchParams = function(search){
 	  $scope.search.specialization = 'bio';
 	  $http.get('/getadvancedsearchparams/', {
 	      params: { }
 	    }).then(function(response){
-	    	//search.specialization = response.data.specializations;
+	    	search.specialization = response.data.specializations;
 	    	search.city = response.data.cities;
 	    	//alert(search.specialization);
 	    });

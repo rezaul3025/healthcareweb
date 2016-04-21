@@ -20,7 +20,7 @@ var Service = (function () {
     Service.prototype.generateSelect2Box = function (element, params, scope, ngModel, path) {
         var validation = this.triggerValidation;
         $(element).select2(params).on("select2-blur", function (elem) {
-            //validation(ngModel, scope);
+            validation(ngModel, scope);
         }).on("select2-close", function (elem) {
             var select2Data = $(this).data("select2");
             // Manually blur search input on close to let placeholder reappear
@@ -28,43 +28,53 @@ var Service = (function () {
             if (select2Data) {
                 select2Data.search.blur();
             }
-            //validation(ngModel, scope);
+            validation(ngModel, scope);
         });
-        scope.$watchCollection(path, function () {
+        /*scope.$watchCollection(path, function () {
             var value = ngModel.$viewValue;
             $(element).select2('data', null);
             if (value !== undefined && value != null) {
                
                 $(element).select2('val', value);
-               // validation(ngModel, scope);
+               validation(ngModel, scope);
             }
-        });
+        });*/
     };
     
    
-    Service.prototype.getRemoteMultiPagedConfig = function (element, ngModel, placeholder, allowClear, url, pageSize, params) {
+    Service.prototype.getRemoteMultiPagedConfig = function (element, ngModel, placeholder, allowClear, url, pageSize) {
         return {
-            placeholder: placeholder,
+        	placeholder: placeholder,
             multiple: true,
             allowClear: allowClear,
             dropdownAutoWidth: true,
-            quietMillis: 100,
             ajax: {
+            	quietMillis: 100,
+                dataType: 'json',
                 url: url,
-                data: function (term, page) {
-                    var result = {
-                        selected: element.val(),
-                        query: term,
-                        page: page,
-                        pageSize: pageSize
-                    };
-                    $.extend(result, params);
-                    return result;
-                },
-                results: function (data, page) {
-                    var more = (page * pageSize) < data.count;
-                    return { results: data.results, more: more };
-                }
+                data: function (params) {
+ 		           return {
+ 				        queryStr: typeof params.term != 'undefined' ? params.term:'', // search term
+ 				        page: params.page
+ 				      };
+ 		        },
+ 		        processResults: function (data,  params) {
+ 		          var results = [];
+ 		          $.each(data, function(index, item){
+ 		            results.push({
+ 		              id: item,
+ 		              text: item
+ 		            });
+ 		          });
+ 		          params.page = params.page || 1;
+ 		
+ 		          return {
+ 		              results: results,
+ 				        pagination: {
+ 				          more: (params.page * 30) < data.length
+ 				        }
+ 		          };
+ 		        }
             },
             formatSelection: function (item) {
                 if (typeof item === "string") {
@@ -87,7 +97,7 @@ var Service = (function () {
                 return item;
             },
             initSelection: function (elem, callback) {
-                var value = ngModel.$viewValue;
+                var value = 'hello';//ngModel.$viewValue;
               
                 if (!value) {
                     callback("");

@@ -257,13 +257,13 @@
 	         	<hr/>
 	         	<div class="form-group">
 							    <label for="specialization" class="control-label">Specialization</label>
-							    	{{search.specialization}}k
+							    	{{specialization1}}k
 							      <!-- <select  ng-model="search.specialization" class="form-control col-sm-3 specialization" multiple="multiple" id="specialization" >
 							      </select> -->
-							   		<hc-combo-div id="specialization" name="specialization" ng-model="search.specialization" class="form-control col-sm-3" ></hc-combo-div>
+							      {{specialization1}}
+							   		<hc-combo-div id="specialization" name="specialization" ng-model="search.specialization" ng-init="specialization = search.specialization" class="form-control col-sm-3" ></hc-combo-div>
 							   		
-							   		<ng-sparkline />
-							   		<div ng-sparkline></div>
+							   		
 							  </div>
 	       
 	         <div class="form-group">
