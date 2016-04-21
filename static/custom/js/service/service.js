@@ -48,6 +48,7 @@ var Service = (function () {
             multiple: true,
             allowClear: allowClear,
             dropdownAutoWidth: true,
+            tags: true,
             ajax: {
             	quietMillis: 100,
                 dataType: 'json',
@@ -96,7 +97,7 @@ var Service = (function () {
                 }
                 return item;
             },
-            initSelection: function (elem, callback) {
+            /*initSelection: function (elem, callback) {
                 var value = 'hello';//ngModel.$viewValue;
               
                 if (!value) {
@@ -112,6 +113,11 @@ var Service = (function () {
                 else {
                     callback(elem.value);
                 }
+            }*/
+            
+            initSelection: function (element, callback) {
+            	var value = ngModel.$viewValue;
+                callback({id: 1, text: 'initSelection test' });
             }
         };
     };
