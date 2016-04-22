@@ -10,22 +10,31 @@ module.directive('hcComboDiv', function () {
            // var field = cg.getPropertyOrDefault(attrs, "cgField", hpo);
             //var errors = cg.getPropertyOrDefault(attrs, "cgErrorMessages", "clinicalInfoHpoMessages");
             //return cgDirectives.inputTemplateSelect(form, field, errors, errors, "cg-hpo=''", "Select hpo terms", element);
-        	return '<select type="text" name="'+attrs.name+'" hc-combo="" id="'+attrs.id+'" ></select>';
+        	return '<input type="text" name="'+attrs.name+'" hc-combo="" id="'+attrs.id+'" ></input>';
         	
         }
     	
     }
 });
 
-module.directive('hcCombo',['hcService', function (hcService) {
+module.directive('hcCombo',['hcService','$http', function (hcService, $http) {
 	return {
         restrict: 'A',
         require: 'ngModel',
         link: function (scope, element, attrs, ngModel) {
         	
-            var selectParams = hcService.getRemoteMultiPagedConfig(element, ngModel, 'Select sp1 terms', true, "/specializations", 5);
-            
-            hcService.generateSelect2Box(element, selectParams, scope, ngModel, attrs.ngModel);
+        	/*results.push({
+	              id: 'itme',
+	              text: 'item'
+	            });*/
+        	$http.get('/specializations', {
+         	      params: {	queryStr:'y' }
+         	    }).then(function(response){
+         	    	 var selectParams = hcService.getRemoteMultiPagedConfig(element, ngModel, 'Select sp1 terms', true, "/specializations", 5, response.data);
+                     
+                     hcService.generateSelect2Box(element, selectParams, scope, ngModel, attrs.ngModel);
+         	    });
+           
             
            /* ngModel.$validators.mandatory = cgValidationService.generateMandatoryValidator(); 
            

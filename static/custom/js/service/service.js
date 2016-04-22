@@ -1,10 +1,10 @@
 var module = angular.module('healthcareWebApp',['ui.bootstrap']);
 
-module.factory('hcService', ['$timeout', function ($timeout) {
-    return new Service($timeout);
+module.factory('hcService', ['$timeout','$http', function ($timeout, $http) {
+    return new Service($timeout, $http);
 }]);
 var Service = (function () {
-    function Service(timeout, utilsService) {
+    function Service(timeout, http) {
         var _this = this;
         this.triggerValidation = function (ngModel, scope) {
             if (ngModel.$untouched) {
@@ -15,6 +15,7 @@ var Service = (function () {
             }
         };
         this.timeout = timeout;
+        this.http = http;
     }
     
     Service.prototype.generateSelect2Box = function (element, params, scope, ngModel, path) {
@@ -42,14 +43,16 @@ var Service = (function () {
     };
     
    
-    Service.prototype.getRemoteMultiPagedConfig = function (element, ngModel, placeholder, allowClear, url, pageSize) {
+    Service.prototype.getRemoteMultiPagedConfig = function (element, ngModel, placeholder, allowClear, url, pageSize, params) {
+    	
         return {
         	placeholder: placeholder,
             multiple: true,
             allowClear: allowClear,
             dropdownAutoWidth: true,
-            tags: true,
-            ajax: {
+            data: params
+        ,
+            /*ajax: {
             	quietMillis: 100,
                 dataType: 'json',
                 url: url,
@@ -76,7 +79,7 @@ var Service = (function () {
  				        }
  		          };
  		        }
-            },
+            },*/
             formatSelection: function (item) {
                 if (typeof item === "string") {
                     return item;
@@ -117,7 +120,7 @@ var Service = (function () {
             
             initSelection: function (element, callback) {
             	var value = ngModel.$viewValue;
-                callback({id: 1, text: 'initSelection test' });
+                callback({id:'initSelection test', text: 'initSelection test' });
             }
         };
     };
