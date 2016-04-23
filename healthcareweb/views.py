@@ -144,7 +144,7 @@ def getAllSpecializations(request):
 @require_http_methods(["GET"])
 def getAllCities(request):
 	queryStr = request.GET['queryStr']
-	doctorOb = Doctor.objects.filter(Q(city__icontains=queryStr))
+	doctorOb = Doctor.objects.all()
 	cities = set()
 	for d in doctorOb:
 		cities.add(d.city)

@@ -69,12 +69,12 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
 	  }
   }
   
-  $scope.search = function(){
-	  alert("hello");
-  }
+  $scope.search = function(search){
+	  //alert("hello");
+	  $window.location.href = '/advancesearch?specializationsStr='+search.specialization+'&cityStr='+search.city+'&page=1';
+  };
   $scope.search.specialization = 'bio';
   $scope.getAdvanceSearchParams = function(search){
-	  $scope.search.specialization = 'bio';
 	  $http.get('/getadvancedsearchparams/', {
 	      params: { }
 	    }).then(function(response){

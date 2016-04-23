@@ -20,7 +20,7 @@ var Service = (function () {
     
     Service.prototype.generateSelect2Box = function (element, params, scope, ngModel, path) {
         var validation = this.triggerValidation;
-        $(element).select2(params).on("select2-blur", function (elem) {
+        $(element).select2(params);/*.on("select2-blur", function (elem) {
             validation(ngModel, scope);
         }).on("select2-close", function (elem) {
             var select2Data = $(this).data("select2");
@@ -30,7 +30,7 @@ var Service = (function () {
                 select2Data.search.blur();
             }
             validation(ngModel, scope);
-        });
+        });*/
         /*scope.$watchCollection(path, function () {
             var value = ngModel.$viewValue;
             $(element).select2('data', null);
@@ -48,10 +48,10 @@ var Service = (function () {
         return {
         	placeholder: placeholder,
             multiple: true,
-            allowClear: allowClear,
-            dropdownAutoWidth: true,
-            data: params
-        ,
+            //allowClear: allowClear,
+            //dropdownAutoWidth: true,
+            data: params,
+        
             /*ajax: {
             	quietMillis: 100,
                 dataType: 'json',
@@ -80,7 +80,7 @@ var Service = (function () {
  		          };
  		        }
             },*/
-            formatSelection: function (item) {
+            /*formatSelection: function (item) {
                 if (typeof item === "string") {
                     return item;
                 }
@@ -99,7 +99,7 @@ var Service = (function () {
                     return item;
                 }
                 return item;
-            },
+            },*/
             /*initSelection: function (elem, callback) {
                 var value = 'hello';//ngModel.$viewValue;
               
