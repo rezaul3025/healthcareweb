@@ -265,7 +265,7 @@
 							   		name="specialization" 
 							   		ng-model="search.specialization" 
 							   		url="/specializations"
-							   		ng-change="search(search)"
+							   		ng-change="search(search,0)"
 							   		ng-init="specialization = search.specialization" 
 							   		class="form-control col-sm-3" ></hc-combo-div>
 							   		
@@ -281,15 +281,64 @@
 							   		name="city" 
 							   		ng-model="search.city" 
 							   		url="/cities"
-							   		ng-change="search(search)"
+							   		ng-change="search(search,0)"
 							   		class="form-control col-sm-3" ></hc-combo-div>
 							  </div>
 				<div class="form-group">
-							    <label for="ratings" class="control-label">Ratings</label>
-							    
-							      <p href="#" id="ratings" class="form-control"><sapn ng-repeat="p in ratingPoints"><a ng-click="ratingPointchnage(false,$index)" href="#" ng-attr-title="test" ng-if="p.isActive" ><span class="glyphicon glyphicon-star"></span></a><a href="#" ng-click="ratingPointchnage(true,$index+1 )" ng-attr-title="test" ng-if="!p.isActive" ><span class="glyphicon glyphicon-star-empty"></span></a>&nbsp;</sapn></p>
-							   
-							  </div>
+					<label for="ratings" class="control-label">Ratings</label>
+					<!-- <p href="#" id="ratings" class="form-control">
+						<sapn ng-repeat="p in ratingPointsArr">
+							<a  ng-click="ratingPointchnage(false,$index, search)" href="#" ng-attr-title="test" ng-if="p.isActive" ><span class="glyphicon glyphicon-star"></span></a>
+							<a href="#" ng-click="ratingPointchnage(true,$index+1 ,search)" ng-attr-title="test" ng-if="!p.isActive" ><span class="glyphicon glyphicon-star-empty"></span></a>
+						&nbsp;</sapn>
+						
+					</p> -->
+					<h4> 
+						<a href="#" ng-click="search(search,1)">
+							<span class="glyphicon glyphicon-star"></span>
+							&nbsp;<span class="glyphicon glyphicon-star-empty"></span>
+							&nbsp;<span class="glyphicon glyphicon-star-empty"></span>
+							&nbsp;<span class="glyphicon glyphicon-star-empty"></span>
+							&nbsp;<span class="glyphicon glyphicon-star-empty"></span>
+						</a>
+					</h4>
+					<h4> 
+						<a href="#" ng-click="search(search,2)">
+							<span class="glyphicon glyphicon-star"></span>
+							&nbsp;<span class="glyphicon glyphicon-star"></span>
+							&nbsp;<span class="glyphicon glyphicon-star-empty"></span>
+							&nbsp;<span class="glyphicon glyphicon-star-empty"></span>
+							&nbsp;<span class="glyphicon glyphicon-star-empty"></span>
+						</a>	
+					</h4>
+					<h4> 
+						<a href="#" ng-click="search(search,3)">
+							<span class="glyphicon glyphicon-star"></span>
+							&nbsp;<span class="glyphicon glyphicon-star"></span>
+							&nbsp;<span class="glyphicon glyphicon-star"></span>
+							&nbsp;<span class="glyphicon glyphicon-star-empty"></span>
+							&nbsp;<span class="glyphicon glyphicon-star-empty"></span>
+						</a>
+					</h4>
+					<h4>
+						<a href="#" ng-click="search(search,4)"> 
+							<span class="glyphicon glyphicon-star"></span>
+							&nbsp;<span class="glyphicon glyphicon-star"></span>
+							&nbsp;<span class="glyphicon glyphicon-star"></span>
+							&nbsp;<span class="glyphicon glyphicon-star"></span>
+							&nbsp;<span class="glyphicon glyphicon-star-empty"></span>
+						</a>	
+					</h4>
+					<h4> 
+						<a href="#" ng-click="search(search,5)">
+							<span class="glyphicon glyphicon-star"></span>
+							&nbsp;<span class="glyphicon glyphicon-star"></span>
+							&nbsp;<span class="glyphicon glyphicon-star"></span>
+							&nbsp;<span class="glyphicon glyphicon-star"></span>
+							&nbsp;<span class="glyphicon glyphicon-star"></span>
+						</a>
+					</h4>	   
+				</div>
 	         </div>
 	         
 	         </div>

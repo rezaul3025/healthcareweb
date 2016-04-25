@@ -50,28 +50,35 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
         });*/
   };
   
-  $scope.ratingPoints = [{"point":1, "isActive":false},
+  $scope.ratingPointsArr = [{"point":1, "isActive":false},
                          {"point":2, "isActive":false},
                          {"point":3, "isActive":false},
                          {"point":4, "isActive":false},
                          {"point":5, "isActive":false}]
  
-  $scope.ratingPointchnage = function(value, point){
+  $scope.ratingPointchnage = function(value, point, search){
+	  search['ratingPoints'] = point;
+	  $scope.ratingPoints = point;
 	  if(!value){
-		  for(var r=point;r<$scope.ratingPoints.length;r++){
-			  $scope.ratingPoints[r].isActive = value;
-		  } 
+		  for(var r=$scope.ratingPoints;r<$scope.ratingPointsArr.length;r++){
+			  $scope.ratingPointsArr[r].isActive = value;
+		  }   
 	  }
 	  else{
-		  for(var r=0; r<point;r++){
-			  $scope.ratingPoints[r].isActive = value;
+		  for(var r=0; r<$scope.ratingPoints;r++){
+			  $scope.ratingPointsArr[r].isActive = value;
 		  }
+		  
+		  alert(search.ratingPoints);  
+		  window.location.href = '/advancesearch?specializationsStr='+search.specialization+'&cityStr='+search.city+'&ratingPoints='+search.ratingPoints+'&page=1';
 	  }
   }
   
-  $scope.search = function(search){
-	  //alert("hello");
-	  $window.location.href = '/advancesearch?specializationsStr='+search.specialization+'&cityStr='+search.city+'&page=1';
+  $scope.search = function(search, ratingPoints){
+	
+	  search['ratingPoints'] = ratingPoints;
+	  //alert(search.ratingPoints);
+	  $window.location.href = '/advancesearch?specializationsStr='+search.specialization+'&cityStr='+search.city+'&ratingPoints='+search.ratingPoints+'&page=1';
   };
   $scope.search.specialization = 'bio';
   $scope.getAdvanceSearchParams = function(search){
@@ -80,10 +87,12 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
 	    }).then(function(response){
 	    	search.specialization = response.data.specializations;
 	    	search.city = response.data.cities;
-	    	//alert(search.specialization);
+	    	search.ratingPoints = response.data.ratingPoints;
+	    	//$scope.ratingPointchnage(true,search.ratingPoints, search);
+	    	$scope.ratingPoints = response.data.ratingPoints;
 	    });
 	  
-	  
+	  //$scope.ratingPointchnage(true,search.ratingPoints, search);
   }
 
 	

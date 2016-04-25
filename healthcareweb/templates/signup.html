@@ -354,7 +354,17 @@
 		          };
 		        }
 		    }
-		});
+		}).on('select2:unselecting', function(e) {
+            $(this).on('select2:opening', function(e) {
+                e.preventDefault();
+            });
+
+        }).on('select2:unselect', function(e) {
+            var sel = $(this);
+            setTimeout(function() {
+              sel.off('select2:opening');
+            }, 1);
+       });
 
 	</script>
     
