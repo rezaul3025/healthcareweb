@@ -94,6 +94,4 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window',  fun
 	  
 	  //$scope.ratingPointchnage(true,search.ratingPoints, search);
   }
-
-	
 }])

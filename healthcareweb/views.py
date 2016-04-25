@@ -216,5 +216,4 @@ def advanceSearch(request):
 @require_http_methods(["GET"])
 def getAdvancedSearchParams(request):
 	search_params = {'specializations':request.session['search_specializations'],'cities':request.session['search_cities'],'ratingPoints':request.session['ratingPoints']}
-	return HttpResponse(json.dumps(search_params), content_type="application/json")
-	
+	return HttpResponse(json.dumps(search_params), content_type="application/json")	
