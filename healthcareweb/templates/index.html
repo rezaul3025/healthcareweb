@@ -285,11 +285,14 @@
 							   		class="form-control col-sm-3" ></hc-combo-div>
 							  </div>
 				<div class="form-group">
-							    <label for="ratings" class="control-label">Ratings</label>
-							    
-							      <p href="#" id="ratings" class="form-control"><sapn ng-repeat="p in ratingPoints"><a ng-click="ratingPointchnage(false,$index)" href="#" ng-attr-title="test" ng-if="p.isActive" ><span class="glyphicon glyphicon-star"></span></a><a href="#" ng-click="ratingPointchnage(true,$index+1 )" ng-attr-title="test" ng-if="!p.isActive" ><span class="glyphicon glyphicon-star-empty"></span></a>&nbsp;</sapn></p>
-							   
-							  </div>
+					<label for="ratings" class="control-label">Ratings</label>
+					<p href="#" id="ratings" class="form-control">
+						<sapn ng-repeat="p in ratingPointsArr">
+							<a  ng-click="ratingPointchnage(false,$index, search)" href="#" ng-attr-title="test" ng-if="p.isActive" ><span class="glyphicon glyphicon-star"></span></a>
+							<a href="#" ng-click="ratingPointchnage(true,$index+1 ,search)" ng-attr-title="test" ng-if="!p.isActive" ><span class="glyphicon glyphicon-star-empty"></span></a>
+						&nbsp;</sapn>
+					</p>	   
+				</div>
 	         </div>
 	         
 	         </div>

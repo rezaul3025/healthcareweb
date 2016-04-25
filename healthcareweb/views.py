@@ -179,8 +179,11 @@ def simpleSearch(request):
 def advanceSearch(request):
 	specializationsStr = request.GET['specializationsStr']
 	cityStr = request.GET['cityStr']
+	ratingPoints = request.GET['ratingPoints']
 	request.session['search_specializations'] = specializationsStr.split(",")
 	request.session['search_cities'] = cityStr.split(",")
+	request.session['ratingPoints'] = ratingPoints
+	
 	try:
 		#doctor_list = Doctor.objects.filter(Q(specialization__icontains=queryStr) | 
 		#	Q(firstName__startswith=queryStr) | Q(lastName__startswith=queryStr) |
@@ -212,6 +215,6 @@ def advanceSearch(request):
 	#return HttpResponse(data, content_type="application/json")
 @require_http_methods(["GET"])
 def getAdvancedSearchParams(request):
-	search_params = {'specializations':request.session['search_specializations'],'cities':request.session['search_cities']}
+	search_params = {'specializations':request.session['search_specializations'],'cities':request.session['search_cities'],'ratingPoints':request.session['ratingPoints']}
 	return HttpResponse(json.dumps(search_params), content_type="application/json")
 	

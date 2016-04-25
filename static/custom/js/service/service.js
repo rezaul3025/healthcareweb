@@ -20,7 +20,17 @@ var Service = (function () {
     
     Service.prototype.generateSelect2Box = function (element, params, scope, ngModel, path) {
         var validation = this.triggerValidation;
-        $(element).select2(params);/*.on("select2-blur", function (elem) {
+        $(element).select2(params).on('select2:unselecting', function(e) {
+            $(this).on('select2:opening', function(e) {
+                e.preventDefault();
+            });
+
+        }).on('select2:unselect', function(e) {
+            var sel = $(this);
+            setTimeout(function() {
+              sel.off('select2:opening');
+            }, 1);
+       });/*.on("select2-blur", function (elem) {
             validation(ngModel, scope);
         }).on("select2-close", function (elem) {
             var select2Data = $(this).data("select2");
