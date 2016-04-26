@@ -83,7 +83,7 @@ DATABASES = {
        'ENGINE': 'django.db.backends.mysql',
        'HOST': 'localhost',
        'USER': 'root',
-       'PASSWORD': 'root' ,
+       'PASSWORD': '' ,
        'OPTIONS': {
           'autocommit': True,
         },

@@ -16,7 +16,11 @@ class Doctor(models.Model):
 
 class Specialization(models.Model):
 	name = models.TextField()
-	doctors = models.ManyToManyField(Doctor)
+	doctors = models.ManyToManyField(Doctor, through='DoctorSpecialization')
+	
+class DoctorSpecialization(models.Model):
+	doctor = models.ForeignKey(Doctor)
+	specialization = models.ForeignKey(Specialization)
 	
 class Rating(models.Model):
 	points = models.IntegerField(0)

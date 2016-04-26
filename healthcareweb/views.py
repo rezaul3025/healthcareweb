@@ -3,7 +3,7 @@ from django.shortcuts import render, RequestContext,render_to_response
 from django.core import serializers
 #from healthcareweb.db.mysqlconn import getConnection
 #from healthcareweb.models.doctor import Doctor
-from healthcareweb.models import Doctor
+from healthcareweb.models import Doctor, DoctorSpecialization
 from healthcareweb.models import Specialization
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http import Http404,HttpRequest,HttpResponse,HttpResponseRedirect
@@ -75,8 +75,9 @@ def dosignup(request):
 	specializations = Specialization.objects.filter(name__in=specialization)
 	print(len(specializations))
 	for sp in specializations:
-		sp.doctors.add(doctor)
-		sp.save()
+		#sp.doctors.add(doctor)
+		#sp.save()
+		DoctorSpecialization.objects.create(doctor = doctor, specialization=sp)
 		print(sp.name)
 	user = User.objects.create_user(username=request.POST['userName'], password = request.POST['password'], email = email, first_name=firstName, last_name = lastName)
 	#user.save()
@@ -188,12 +189,17 @@ def advanceSearch(request):
 		#doctor_list = Doctor.objects.filter(Q(specialization__icontains=queryStr) | 
 		#	Q(firstName__startswith=queryStr) | Q(lastName__startswith=queryStr) |
 		#	Q(city__startswith=queryStr))
-		doctor_list = []
-		specializations = Specialization.objects.filter(name__in=specializationsStr.split(","))
-		for sp in specializations:
-			doctor_list.append(sp.doctors.all())	
+		pecializationIds = []
+		for spids in Specialization.objects.filter(name__in=specializationsStr.split(",")):
+			pecializationIds.append(spids)
+			
 		
-		print(doctor_list)
+		doctor_list = []
+		doctor_pecializations = DoctorSpecialization.objects.select_related('doctor','specialization').filter(specialization_id__in=pecializationIds)
+		for sp in doctor_pecializations:
+			
+			doctor_list.append(sp.doctor)	
+			
 		paginator = Paginator(doctor_list, 5) # Show 2 contacts per page
 		page = request.GET.get('page')
 		doctors = paginator.page(page)
@@ -205,7 +211,6 @@ def advanceSearch(request):
 		doctors = paginator.page(paginator.num_pages)
 	except Exception as ex:
 		print(ex)
-	print(doctors)
 	
 	#data = serializers.serialize('json', doctors)
 	
