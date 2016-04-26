@@ -104,7 +104,13 @@
 	z-index: 9999;
 	padding-top:200px;
 	background: url({% static "images/ajax-loader.gif" %}) top no-repeat #fff;
-}
+	}
+	
+	.rating a:hover{
+		background-color: #fff;
+		text-decoration:none; 
+	}
+	
    </style>
   </head>
 
@@ -284,7 +290,8 @@
 							   		ng-change="search(search,0)"
 							   		class="form-control col-sm-3" ></hc-combo-div>
 							  </div>
-				<div class="form-group">
+							  
+				<div class="form-group rating">
 					<label for="ratings" class="control-label">Ratings</label>
 					<!-- <p href="#" id="ratings" class="form-control">
 						<sapn ng-repeat="p in ratingPointsArr">
@@ -293,6 +300,7 @@
 						&nbsp;</sapn>
 						
 					</p> -->
+					
 					<h4> 
 						<a href="#" ng-click="search(search,1)">
 							<span class="glyphicon glyphicon-star"></span>
