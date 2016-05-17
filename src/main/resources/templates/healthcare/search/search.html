@@ -2,7 +2,7 @@
 	layout:decorator="/healthcare/layout">
 <head>
 </head>
-<body ng-controller="HealthcareWebSearchController" th:attr="ng-init='getSimpleResult(\''+${key}+'\','+${page}+')'">
+<body ng-controller="HealthcareWebSearchController" th:attr="ng-init='getSearchResult(\''+${searchType}+'\',\''+${key}+'\',\''+${specializations}+'\',\''+${cities}+'\','+${page}+')'">
 	<div>
 		<div layout:fragment="content">
 			<p class="pull-right visible-xs">

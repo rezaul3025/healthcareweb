@@ -9,6 +9,16 @@ public class SearchForm {
 	private List<String> city = new ArrayList<String>();
 
 	private Integer page;
+	
+	public SearchForm(){
+		
+	}
+	
+	public SearchForm(List<String> specilizations, List<String> city, Integer page){
+		this.specilizations = specilizations;
+		this.city = city;
+		this.page = page;
+	}
 
 	public List<String> getSpecilizations() {
 		if (specilizations.isEmpty()) {

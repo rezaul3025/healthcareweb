@@ -31,11 +31,22 @@ public class HealthcareWebController {
 		return "healthcare/doctor/edit";
 	}
 
-	@RequestMapping(value = "/doctor-search")
+	@RequestMapping(value = "/doctor-search-simple")
 	public String searchPage(@RequestParam("key") String key, @RequestParam("page") Integer page, Model model) {
+		model.addAttribute("searchType", "simple");
 		model.addAttribute("key", key);
 		model.addAttribute("page", page);
-		
+
+		return "healthcare/search/search";
+	}
+	
+	@RequestMapping(value = "/doctor-search-advance")
+	public String searchPage(@RequestParam("specializations") String specializations,@RequestParam("cities") String cities, @RequestParam("page") Integer page, Model model) {
+		model.addAttribute("searchType", "advance");
+		model.addAttribute("specializations", specializations);
+		model.addAttribute("cities", cities);
+		model.addAttribute("page", page);
+
 		return "healthcare/search/search";
 	}
 }

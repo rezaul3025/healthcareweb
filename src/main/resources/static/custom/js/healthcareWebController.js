@@ -63,7 +63,7 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window', '$co
             }, function error(response) {
             });*/
         	
-        	window.location.href = '/doctor-search?key='+item+'&page='+bigCurrentPage;
+        	window.location.href = '/doctor-search-simple?key='+item+'&page='+bigCurrentPage;
         };
 
         /*$scope.simpleResultPager = function (bigCurrentPage) {
@@ -229,6 +229,15 @@ module.controller('HealthcareWebSearchController', ['$http', '$scope', '$window'
 	    var header = $("meta[name='_csrf_header']").attr("content");
 	    $http.defaults.headers.common[header] = token;
 	    console.log(token);
+	    
+	    $scope.getSearchResult = function(searchType, simpleSearchKey, specializations, cities, bigCurrentPage){
+	    	if(searchType == 'simple'){
+	    		$scope.getSimpleResult(simpleSearchKey, bigCurrentPage);
+	    	}
+	    	else if(searchType == 'advance'){
+	    		$scope.getAdvanceSearchResult(specializations, cities, bigCurrentPage);
+	    	}
+	    };
     
 	    $scope.getSimpleResult = function (item, bigCurrentPage) {
             $scope.simpleSearchItem = item;
@@ -255,24 +264,29 @@ module.controller('HealthcareWebSearchController', ['$http', '$scope', '$window'
             }, function error(response) {
             });
         };
+        
+        $scope.getAdvanceSearchResult = function (specializations, cities, bigCurrentPage){
+        	var empty = ['None'];
+        	$http({
+                method: "GET",
+                url: "/rest/healthcare/advance-doctor-serch",
+                params: {specilizations:typeof specializations != 'undefined'?specializations.split(","):empty,
+              	  		city: typeof cities != 'undefined'?cities.split(","):empty,
+              	  		page:bigCurrentPage}
+            }).then(function mySucces(response) {
+          	  $scope.simpleSearchResults = response.data;
+	        }, function myError(response) {
+	            
+	        });
+        };
 
         $scope.simpleResultPager = function (bigCurrentPage) {
             $scope.getSimpleResult($scope.simpleSearchItem, bigCurrentPage)
         };
         
         $scope.advanceSearch =function(search, page){
-        	  $http({
-                  method: "POST",
-                  url: "/rest/healthcare/advance-doctor-serch",
-                  data: {specilizations:search.specialization,
-                	  		city:search.city,
-                	  		page:page}
-              }).then(function mySucces(response) {
-            	  $scope.simpleSearchResults = response.data;
-  	        }, function myError(response) {
-  	            
-  	        });
+        	window.location.href = '/doctor-search-advance?specializations='+search.specialization+'&cities='+search.city+'&page='+page;
         };
        
-
+     
     }])    

@@ -1,6 +1,7 @@
 package org.healthcare.web.controller.rest;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -102,9 +103,10 @@ public class HealtcareRestController {
        return  searchService.getSimpleSearchCount(term);
     }
     
-    @RequestMapping(value = "/advance-doctor-serch", method = RequestMethod.POST)
-    public Set<Doctor> advanceDoctorSearch(@RequestBody SearchForm searchForm) {
-        return searchService.advanceDoctorSearch(searchForm);
+    @RequestMapping(value = "/advance-doctor-serch", method = RequestMethod.GET)
+    public Set<Doctor> advanceDoctorSearch(@RequestParam("specializations") String specializations, @RequestParam("cities") String cities, @RequestParam("page") Integer page) {
+    	SearchForm searchForm = new SearchForm(Arrays.asList(specializations.split(",")), Arrays.asList(cities.split(",")), page);
+    	return searchService.advanceDoctorSearch(searchForm);
     }
     
     @RequestMapping(value = "/doctor/{id}", method = RequestMethod.GET)
