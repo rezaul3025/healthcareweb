@@ -25,7 +25,7 @@ var Service = (function() {
 	Service.prototype.generateSelect2Box = function(element, params, scope,
 			ngModel, path) {
 		var validation = this.triggerValidation;
-		$(element).select2(params).on('select2:unselecting', function(e) {
+		$(element).select2(params);/*.on('select2:unselecting', function(e) {
 			$(this).on('select2:opening', function(e) {
 				e.preventDefault();
 			});
@@ -45,7 +45,7 @@ var Service = (function() {
 				select2Data.search.blur();
 			}
 			validation(ngModel, scope);
-		});
+		});*/
 		/*scope.$watchCollection(path, function() {
 			var value = ngModel.$viewValue;
 			//alert(value);
@@ -102,7 +102,7 @@ var Service = (function() {
 			 */
 
 			initSelection : function(element, callback) {
-				var preselected_ids = [];
+				/*var preselected_ids = [];
 		        if(elem.val())
 		            $(elem.val().split(",")).each(function () {
 		                preselected_ids.push({id: this});
@@ -116,7 +116,7 @@ var Service = (function() {
 		        
 		        var preselections = pre_selections(preselected_ids);
 		        console.log(preselections);
-	            callback(preselections);
+	            callback(preselections);*/
 			}
 			
 			/*initSelection : function (element, callback) {

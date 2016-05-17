@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.healthcare.domain.Doctor;
 import org.healthcare.persistence.repository.SpecializationRepository;
+import org.healthcare.web.form.SearchForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.healthcare.persistence.repository.DoctorRepository;
@@ -41,5 +42,10 @@ public class SearchServiceHandler implements SearchService {
     public Integer getSimpleSearchCount(String term) {
         return doctorRespository.getSimpleSearchCount(term);
     }
+
+	@Override
+	public Set<Doctor> advanceDoctorSearch(SearchForm searchFrom) {
+		 return doctorRespository.advanceDoctorSearch(searchFrom.getSpecilizations(), searchFrom.getCity(), 10, searchFrom.getPage()*10);
+	}
 
 }

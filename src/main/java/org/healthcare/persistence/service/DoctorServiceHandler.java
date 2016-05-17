@@ -50,9 +50,6 @@ public class DoctorServiceHandler implements DoctorService {
     private ImageRepository imageRepository;
     
     @Autowired
-    private OpeningTimeRepository openingTimeRepository;
-
-    @Autowired
     private UserService userService;
     
     @Value("${doctor_image_path}")
@@ -184,6 +181,11 @@ public class DoctorServiceHandler implements DoctorService {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public List<String> findCities() {
+		return doctorRespository.findCities();
 	}
 
 }

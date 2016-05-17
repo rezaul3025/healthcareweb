@@ -34,8 +34,8 @@ module.directive('hcCombo', ['hcService', '$http', function (hcService, $http) {
                     var results = [];
                     $.each(response.data, function (index, item) {
                         results.push({
-                            id: item.name,
-                            text: item.name
+                        	id: typeof item == 'object'?item.name:item,
+                            text: typeof item == 'object'?item.name:item
                         });
                     });
 

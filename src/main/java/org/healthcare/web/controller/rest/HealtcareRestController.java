@@ -16,6 +16,7 @@ import org.healthcare.persistence.service.SpecializationService;
 import org.healthcare.persistence.service.UserService;
 import org.healthcare.web.form.CommentForm;
 import org.healthcare.web.form.DoctorForm;
+import org.healthcare.web.form.SearchForm;
 import org.healthcare.web.form.UserForm;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,11 @@ public class HealtcareRestController {
     @RequestMapping(value = "/specializations", method = RequestMethod.GET)
     public List<Specialization> getAllSpecialization() {
         return specializationService.findAll();
+    }
+    
+    @RequestMapping(value = "/cities", method = RequestMethod.GET)
+    public List<String> getCities() {
+        return doctorService.findCities();
     }
 
     @RequestMapping(value = "/doctor-signup", method = RequestMethod.POST)
@@ -94,6 +100,11 @@ public class HealtcareRestController {
     @RequestMapping(value = "/simple-doctor-serch-count", method = RequestMethod.GET)
     public Integer getSimpleSearchCount(@RequestParam("term") String term){
        return  searchService.getSimpleSearchCount(term);
+    }
+    
+    @RequestMapping(value = "/advance-doctor-serch", method = RequestMethod.POST)
+    public Set<Doctor> advanceDoctorSearch(@RequestBody SearchForm searchForm) {
+        return searchService.advanceDoctorSearch(searchForm);
     }
     
     @RequestMapping(value = "/doctor/{id}", method = RequestMethod.GET)

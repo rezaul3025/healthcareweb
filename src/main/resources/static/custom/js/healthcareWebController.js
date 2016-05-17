@@ -259,6 +259,20 @@ module.controller('HealthcareWebSearchController', ['$http', '$scope', '$window'
         $scope.simpleResultPager = function (bigCurrentPage) {
             $scope.getSimpleResult($scope.simpleSearchItem, bigCurrentPage)
         };
+        
+        $scope.advanceSearch =function(search, page){
+        	  $http({
+                  method: "POST",
+                  url: "/rest/healthcare/advance-doctor-serch",
+                  data: {specilizations:search.specialization,
+                	  		city:search.city,
+                	  		page:page}
+              }).then(function mySucces(response) {
+            	  $scope.simpleSearchResults = response.data;
+  	        }, function myError(response) {
+  	            
+  	        });
+        };
        
 
     }])    
