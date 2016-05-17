@@ -1,0 +1,39 @@
+<div th:fragment="validationErrorMessage">
+<script type="text/ng-template" id="userNameMessages">
+  		<div ng-message="mandatory" class="notice marker-on-top bg-darkRed fg-white" style='padding: 5px;margin-top:6px'>
+			Enter user name.
+  		</div>
+</script>
+
+<script type="text/ng-template" id="itemThumMessages">
+  		<div ng-message="mandatory" class="notice marker-on-top bg-darkRed fg-white" style='padding: 5px;margin-top:6px'>
+			Enter user name.
+  		</div>
+</script>
+<script type="text/ng-template" id="titleError">
+  		<div ng-message="mandatory" class="notice marker-on-top bg-darkRed fg-white" style='padding: 5px;margin-top:6px'>
+			Please, enter title
+  		</div>
+</script>
+<script type="text/ng-template" id="descriptionError">
+  		<div ng-message="mandatory" class="notice marker-on-top bg-darkRed fg-white" style='padding: 5px;margin-top:6px'>
+			Please, enter description
+  		</div>
+</script>
+<script type="text/ng-template" id="subTitleError">
+  		<div ng-message="mandatory" class="notice marker-on-top bg-darkRed fg-white" style='padding: 5px;margin-top:6px'>
+			Please, enter sub title
+  		</div>
+</script>
+<script type="text/ng-template" id="logoUploadMessages">
+  		<div ng-message="validFileCheck" class="notice marker-on-top bg-darkRed fg-white" style='padding: 5px;margin-top:6px'>
+			Please, select vaild file.
+  		</div>
+		<div ng-message="validFileNameCheck" class="notice marker-on-top bg-darkRed fg-white" style='padding: 5px;margin-top:6px'>
+			Please, selected file name not valid.
+  		</div>
+		<div ng-message="fileSizeCheck" class="notice marker-on-top bg-darkRed fg-white" style='padding: 5px;margin-top:6px'>
+			Please, selected file excede maximum size limit.
+  		</div>
+</script>
+</div>

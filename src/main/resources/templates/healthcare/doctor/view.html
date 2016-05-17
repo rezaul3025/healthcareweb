@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en" ng-app="healthcareWebApp"
+	layout:decorator="/healthcare/layout">
+<head>
+</head>
+<body ng-controller="HealthcareWebController"
+	th:attr="ng-init='initDoctorView('+${doctorId}+')'">
+	<div layout:fragment="content">
+		<p class="pull-right visible-xs">
+			<button type="button" class="btn btn-primary btn-xs"
+				data-toggle="offcanvas">Toggle nav</button>
+		</p>
+
+		<div class="media">
+			<div class="media-left">
+				<a href="#" ng-if="!doctor.imageMeta.webPath.length">
+					<p>
+						<i class="glyphicon glyphicon-user"
+							style="font-size: 60px; color: lightgray;"></i>
+					</p>
+				</a> 
+				<img width="{{doctor.imageMeta.width/2}}" height="{{doctor.imageMeta.height/2}}" ng-if="doctor.imageMeta.webPath.length &gt; 0"
+					alt="{{doctor.imageMeta.name}}" src="{{doctor.imageMeta.webPath}}" />
+			</div>
+			<div class="media-body">
+				<h4 class="media-heading">{{doctor.title}} {{doctor.firstName}}
+					{{doctor.lastName}}</h4>
+				<p>
+					<span class="glyphicon glyphicon-map-marker"></span> This address
+				</p>
+				<h5>
+					<a href="#" ng-click="search(search, 2)"> <span
+						class="glyphicon glyphicon-star"></span> &nbsp;<span
+						class="glyphicon glyphicon-star"></span> &nbsp;<span
+						class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+						class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+						class="glyphicon glyphicon-star-empty"></span>
+					</a>
+				</h5>
+			</div>
+		</div>
+		<div class="row">
+			<p class="col-xs-12 col-lg-12">
+				<a ng-repeat="dts in doctor.doctorSpecializations" href="#"><span
+					class="badge">{{dts.specialization.name}}</span>&nbsp;</a>
+			</p>
+		</div>
+		<div class="row">
+			<p class="col-xs-12 col-lg-12">{{doctor.description}}</p>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-lg-12">
+				<h4>Opening time</h4>
+				<table class="table">
+					<tr>
+						<th ng-repeat="timeTable in openingTimes">{{timeTable.day}}</th>
+					</tr>
+					<tr>
+						<td ng-repeat="timeTable in openingTimes"><span
+							ng-repeat="t in timeTable.time">{{t.from}} - {{t.to}}<br /></span></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-lg-12">
+				<h4>Contact details</h4>
+				<hr />
+				<table>
+					<tr>
+						<th><a><span class="glyphicon glyphicon-phone-alt"></span></a> </th>
+						<td style="padding-left: 10px">{{doctor.mobile}}</td>
+					</tr>
+					<tr>
+						<th><a><span class="glyphicon glyphicon-envelope"></span></a> </th>
+						<td style="padding-left: 10px">{{doctor.email}}</td>
+					</tr>
+					<tr>
+						<th><a><span class="glyphicon glyphicon-globe"></span></a> </th>
+						<td style="padding-left: 10px"><a href="{{doctor.website}}">{{doctor.website}}</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<br /> <br /> <br />
+		<div class="row">
+			<div class="col-xs-12 col-lg-12">
+				<h4 ng-if="doctor.comments.length &gt; 0">
+					Comment(s) <span class="badge">{{doctor.comments.length}}</span>
+				</h4>
+				<!-- <div class="media" ng-repeat="comment in doctor.comments">
+					<div class="media-left">
+						<h5>{{comment.user.firstName}} {{comment.user.lastName}}</h5>
+					</div>
+					<div class="media-body">
+						<h4 class="media-heading">Media heading</h4>
+						<p>{{comment.comment}}</p>
+					</div>
+				</div> -->
+				<table class="table" cellpadding="5"
+					ng-if="doctor.comments.length &gt; 0">
+					<tr ng-repeat="comment in doctor.comments">
+						<th>{{comment.user.firstName}} {{comment.user.lastName}}
+							<p>{{comment.date}}</p>
+						</th>
+						<td>
+							<blockquote>
+								{{comment.comment}}
+								<p th:replace="/healthcare/fragments/fragments :: rating" />
+							</blockquote>
+
+							
+						</td>
+					</tr>
+				</table>
+				<div class="form-group">
+					<label for="from"> <span
+						class="glyphicon glyphicon-comment"></span> Write comment <span
+						sec:authorize="isAuthenticated()"> [<span
+							th:text="${#authentication.getPrincipal().getUser().getFirstName()}"></span>
+							<span
+							th:text="${#authentication.getPrincipal().getUser().getLastName()}"></span>]
+					</span>
+					</label>
+					<textarea ng-model="comment.comment" class="form-control" id="from"
+						placeholder="Comment"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="to">Rate this doctor</label> <input type="hidden"
+						ng-model="rate" class="form-control" id="to" placeholder="rate" />
+					<p href="#" id="ratings" class="form-control">
+						<sapn ng-repeat="p in ratingPointsArr"> <a
+							ng-click="ratingPointchnage(false,$index, search)" href="#"
+							ng-attr-title="test" ng-if="p.isActive"><span
+							class="glyphicon glyphicon-star"></span></a> <a href="#"
+							ng-click="ratingPointchnage(true,$index+1 ,search)"
+							ng-attr-title="test" ng-if="!p.isActive"><span
+							class="glyphicon glyphicon-star-empty"></span></a> &nbsp;</sapn>
+
+					</p>
+				</div>
+				<button sec:authorize="isAuthenticated()" type="button"
+					th:attr="ng-click='addComment(comment,'+${#authentication.getPrincipal().getUser().getId()}+')'"
+					class="btn btn-default">Add comment</button>
+				<button sec:authorize="!isAuthenticated()" type="button"
+					class="btn btn-default">Add comment</button>
+
+			</div>
+		</div>
+	</div>
+	<div layout:fragment="sidebar">
+		<div class="panel panel-primary">
+			<div class="panel-body">
+				<h3>Advanced search</h3>
+				<hr />
+				<div class="form-group">
+					<label for="specialization" class="control-label">Specialization</label>
+					<hc-combo-div id="specialization" name="specialization"
+						ng-model="search.specialization" ng-change="search(search, 0)"
+						ng-init="specialization = search.specialization"
+						url="/rest/healthcare/specializations"
+						class="form-control col-sm-3"></hc-combo-div>
+				</div>
+
+				<div class="form-group">
+					<label for="city" class="control-label">City</label>
+					<hc-combo-div id="city" name="city" ng-model="search.city"
+						url="/cities" ng-change="search(search, 0)"
+						class="form-control col-sm-3"></hc-combo-div>
+				</div>
+
+				<div class="form-group rating">
+					<label for="ratings" class="control-label">Ratings</label>
+
+					<h4>
+						<a href="#" ng-click="search(search, 1)"> <span
+							class="glyphicon glyphicon-star"></span> &nbsp;<span
+							class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+							class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+							class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+							class="glyphicon glyphicon-star-empty"></span>
+						</a>
+					</h4>
+					<h4>
+						<a href="#" ng-click="search(search, 2)"> <span
+							class="glyphicon glyphicon-star"></span> &nbsp;<span
+							class="glyphicon glyphicon-star"></span> &nbsp;<span
+							class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+							class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+							class="glyphicon glyphicon-star-empty"></span>
+						</a>
+					</h4>
+					<h4>
+						<a href="#" ng-click="search(search, 3)"> <span
+							class="glyphicon glyphicon-star"></span> &nbsp;<span
+							class="glyphicon glyphicon-star"></span> &nbsp;<span
+							class="glyphicon glyphicon-star"></span> &nbsp;<span
+							class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+							class="glyphicon glyphicon-star-empty"></span>
+						</a>
+					</h4>
+					<h4>
+						<a href="#" ng-click="search(search, 4)"> <span
+							class="glyphicon glyphicon-star"></span> &nbsp;<span
+							class="glyphicon glyphicon-star"></span> &nbsp;<span
+							class="glyphicon glyphicon-star"></span> &nbsp;<span
+							class="glyphicon glyphicon-star"></span> &nbsp;<span
+							class="glyphicon glyphicon-star-empty"></span>
+						</a>
+					</h4>
+					<h4>
+						<a href="#" ng-click="search(search, 5)"> <span
+							class="glyphicon glyphicon-star"></span> &nbsp;<span
+							class="glyphicon glyphicon-star"></span> &nbsp;<span
+							class="glyphicon glyphicon-star"></span> &nbsp;<span
+							class="glyphicon glyphicon-star"></span> &nbsp;<span
+							class="glyphicon glyphicon-star"></span>
+						</a>
+					</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

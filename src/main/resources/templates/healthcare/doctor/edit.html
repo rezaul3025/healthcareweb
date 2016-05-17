@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en" ng-app="healthcareWebApp"
+	layout:decorator="/healthcare/layout">
+<head>
+</head>
+<body ng-controller="HealthcareWebController"
+	th:attr="ng-init='initDoctorView('+${doctorId}+')'">
+	<div layout:fragment="content">
+		<div
+			th:replace="/healthcare/message/validation.error.message :: validationErrorMessage" />
+		<p class="pull-right visible-xs">
+			<button type="button" class="btn btn-primary btn-xs"
+				data-toggle="offcanvas">Toggle nav</button>
+		</p>
+		<h3><a><span class="glyphicon glyphicon-pencil"></span></a> Edit your profile</h3>
+		<hr />
+		<div class="panel-group" id="accordion" role="tablist"
+			aria-multiselectable="true">
+			<div class="panel panel-default">
+				<div class="panel-heading" role="tab" id="headingGeneralInfo">
+					<h4 class="panel-title">
+						<a role="button" data-toggle="collapse" data-parent="#accordion"
+							href="#generalInfo" aria-expanded="true"
+							aria-controls="generalInfo"> <span class="glyphicon glyphicon-info-sign"></span> General information </a>
+					</h4>
+				</div>
+				<div id="generalInfo" class="panel-collapse collapse in"
+					role="tabpanel" aria-labelledby="headingGeneralInfo">
+					<div class="panel-body">
+						<form class="form-horizontal">
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-2 control-label">{{doctor.imageMeta.webPath.length
+									&gt; 0 ?'Update ':''}}Doctor picture</label>
+								<div class="col-sm-5">
+									<img width="{{doctor.imageMeta.width / 2}}"
+										height="{{doctor.imageMeta.height / 2}}"
+										ng-if="doctor.imageMeta.webPath.length &gt; 0"
+										alt="{{doctor.imageMeta.name}}"
+										src="{{doctor.imageMeta.webPath}}" />
+									<hc-file-upload-field type="file" hc-field="bLogoUpload"
+										hc-form="bSignupForm" id="bLogoUpload"
+										ng-model="doctor.imageUpload" formats="jpg,jpeg,png,gif"
+										docmaxsize="500"> </hc-file-upload-field>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="init" class="col-sm-2 control-label">Title</label>
+								<div class="col-sm-10">
+									<select class="form-control" id="init" ng-model="doctor.title"
+										ng-disabled="true">
+										<option>Dr.</option>
+										<option>Prof.</option>
+										<option>Prof. Dr.</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="firstName" class="col-sm-2 control-label">First
+									Name</label>
+								<div class="col-sm-10">
+									<input type="text" ng-model="doctor.firstName"
+										class="form-control" id="firstName" placeholder="First Name"
+										ng-disabled="true" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="lastName" class="col-sm-2 control-label">Last
+									Name</label>
+								<div class="col-sm-10">
+									<input type="text" ng-model="doctor.lastName"
+										class="form-control" id="lastName" placeholder="Last Name"
+										ng-disabled="true" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="specialization" class="col-sm-2 control-label">Specialization</label>
+								<div class="col-sm-10">
+									<hc-combo-div id="specialization" name="specialization"
+										ng-model="doctor.specializations"
+										ng-init="specialization = doctor.specializations"
+										url="/rest/healthcare/specializations"
+										class="form-control col-sm-3"></hc-combo-div>
+								</div>
+							</div>
+							<!-- <div class="form-group">
+                                        <div class="col-sm-2">
+                                                <label for="specialization" class="control-label">Description</label>
+                                                <span> [Qualification, achievement etc ]</span>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                                <textarea ng-model="doctor.description" class="form-control"
+                                                        placeholder="Description [Qualification, achievement etc ]">
+                                                
+                                                </textarea>
+                                        </div>
+                                </div> -->
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="button" class="btn btn-primary"
+										ng-click="doSignup(doctor, 'u')">Save changes</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading" role="tab" id="headingDescription">
+					<h4 class="panel-title">
+						<a class="collapsed" role="button" data-toggle="collapse"
+							data-parent="#accordion" href="#collapseDescription"
+							aria-expanded="false" aria-controls="collapseDescription">
+							Description <small>[Qualification, achievement etc ]</small>
+						</a> <span ng-if="doctor.description.length &gt; 0"
+							class="glyphicon glyphicon-ok pull-right"></span> <span
+							ng-if="!doctor.description.length"
+							class="glyphicon glyphicon-remove pull-right"></span>
+					</h4>
+				</div>
+				<div id="collapseDescription" class="panel-collapse collapse"
+					role="tabpanel" aria-labelledby="headingDescription">
+					<div class="panel-body">
+						<form class="form-horizontal">
+							<div class="form-group">
+								<div class="col-sm-2">
+									<label for="specialization" class="control-label">Description</label>
+								</div>
+								<div class="col-sm-10">
+									<textarea ng-model="doctor.description" class="form-control"
+										placeholder="Description [Qualification, achievement etc ]">
+                                        </textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="button" class="btn btn-primary"
+										ng-click="doSignup(doctor, 'u')">Save changes</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading" role="tab" id="headingAddress">
+					<h4 class="panel-title">
+						<a class="collapsed" role="button" data-toggle="collapse"
+							data-parent="#accordion" href="#collapseAddress"
+							aria-expanded="false" aria-controls="collapseAddress">
+							Address </a>
+					</h4>
+				</div>
+				<div id="collapseAddress" class="panel-collapse collapse"
+					role="tabpanel" aria-labelledby="headingAddress">
+					<div class="panel-body">
+						<form class="form-horizontal">
+							<div class="form-group">
+								<label for="line1" class="col-sm-2 control-label">Line1</label>
+								<div class="col-sm-10">
+									<input type="text" ng-model="doctor.addressLine1"
+										class="form-control" id="line1" placeholder="Line1" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="line2" class="col-sm-2 control-label">Line2</label>
+								<div class="col-sm-10">
+									<input type="text" ng-model="doctor.addressLine2"
+										class="form-control" id="line2" placeholder="Line2" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="postCode" class="col-sm-2 control-label">Post
+									Code</label>
+								<div class="col-sm-10">
+									<input type="text" ng-model="doctor.postCode"
+										class="form-control" id="postCode" placeholder="Post Code" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="city" class="col-sm-2 control-label">City</label>
+								<div class="col-sm-10">
+									<input type="text" ng-model="doctor.city" class="form-control"
+										id="city" placeholder="City" />
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="button" class="btn btn-primary"
+										ng-click="doSignup(doctor, 'u')">Save changes</button>
+
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading" role="tab" id="headingContact">
+					<h4 class="panel-title">
+						<a class="collapsed" role="button" data-toggle="collapse"
+							data-parent="#accordion" href="#collapseContact"
+							aria-expanded="false" aria-controls="collapseContact">
+							<span class="glyphicon glyphicon-earphone"></span> Contact </a>
+					</h4>
+				</div>
+				<div id="collapseContact" class="panel-collapse collapse"
+					role="tabpanel" aria-labelledby="headingContact">
+					<div class="panel-body">
+						<hr />
+						<form class="form-horizontal">
+							<div class="form-group">
+								<label for="mobile" class="col-sm-2 control-label">Mobile</label>
+								<div class="col-sm-10">
+									<input type="text" ng-model="doctor.mobile"
+										class="form-control" id="mobile" placeholder="Mobile" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="email" class="col-sm-2 control-label">Email</label>
+								<div class="col-sm-10">
+									<input type="text" ng-model="doctor.email" class="form-control"
+										id="email" placeholder="Email" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="website" class="col-sm-2 control-label">Website</label>
+								<div class="col-sm-10">
+									<input type="text" ng-model="doctor.website"
+										class="form-control" id="website" placeholder="Web site" />
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="button" class="btn btn-primary"
+										ng-click="doSignup(doctor, 'u')">Save changes</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading" role="tab" id="headingCredential">
+					<h4 class="panel-title">
+						<a class="collapsed" role="button" data-toggle="collapse"
+							data-parent="#accordion" href="#collapseCredential"
+							aria-expanded="false" aria-controls="collapseCredential">
+							Credential </a>
+					</h4>
+				</div>
+				<div id="collapseCredential" class="panel-collapse collapse"
+					role="tabpanel" aria-labelledby="headingCredential">
+					<div class="panel-body">
+						<hr />
+						<form class="form-horizontal">
+							<div class="form-group">
+								<label for="emailPhone" class="col-sm-2 control-label">Email
+									/ Phone no.</label>
+								<div class="col-sm-10">
+									<input type="text" ng-model="doctor.user.email"
+										class="form-control" id="emailPhone" ng-disabled="true"
+										placeholder="Email/Phone No." />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="password" class="col-sm-2 control-label">New
+									Password</label>
+								<div class="col-sm-10">
+									<input type="password" ng-model="doctor.user.password"
+										class="form-control" id="password" placeholder="Password" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="rePassword" class="col-sm-2 control-label">Retype
+									New Password</label>
+								<div class="col-sm-10">
+									<input type="password" ng-model="doctor.user.rePassword"
+										class="form-control" id="rePassword"
+										placeholder="Retype Password" />
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="button" class="btn btn-primary"
+										ng-click="doSignup(doctor, 'u')">Save changes</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading" role="tab" id="headingOpeningTime">
+					<h4 class="panel-title">
+						<a class="collapsed" role="button" data-toggle="collapse"
+							data-parent="#accordion" href="#collapseOpeningTime"
+							aria-expanded="false" aria-controls="collapseOpeningTime">
+							<span class="glyphicon glyphicon-time"></span>  Set opening time </a>
+					</h4>
+				</div>
+				<div id="collapseOpeningTime" class="panel-collapse collapse"
+					role="tabpanel" aria-labelledby="headingOpeningTime">
+					<table class="table" ng-if="openingTimes.length &gt; 0">
+						<tr>
+							<th>Day</th>
+							<th>Time</th>
+							<th>Remove</th>
+						</tr>
+						<tr ng-repeat="ot in openingTimes track by $index">
+							<td>{{ot.day}}</td>
+							<td><p ng-repeat="t in ot.time">{{t.from}} - {{t.to}}</p></td>
+							<td><a ng-click="removeTime($index)"><span class="glyphicon glyphicon-remove"></span></a></td>
+						</tr>
+					</table>
+					<div class="panel-body">
+						<br />
+						<h4>Set opening time</h4>
+						<form class="form-horizontal">
+							<table class="table table-responsive" style="padding: 10px">
+								<tr>
+									<th>From day : <select ng-model="fromDay" ng-init="fromDay='Monday'" class="control-label">
+											<option>Monday</option>
+											<option>Tuesday</option>
+											<option>Wednesday</option>
+											<option>Thursday</option>
+											<option>Friday</option>
+									</select>
+									</th>
+									<th>To day : <select ng-model="toDay" class="control-label">
+											<option>Monday</option>
+											<option>Tuesday</option>
+											<option>Tuesday</option>
+											<option>Wednesday</option>
+											<option>Thursday</option>
+											<option>Friday</option>
+									</select>
+									</th>
+								</tr>
+								<!-- <tr>
+									<td></td>
+									<td><select>
+											<option>Monday</option>
+											<option>Tuesday</option>
+									</select></td>
+								</tr> -->
+								<tr>
+									<th>From time : <uib-timepicker ng-model="openingTimeFrm"
+											ng-change="changed()" hour-step="hstepFrm"
+											minute-step="mstepFrm" show-meridian="ismeridianFrm"></uib-timepicker>
+									</th>
+									<th>To time: <uib-timepicker ng-model="openingTimeTo"
+											ng-change="changed()" hour-step="hstepTo"
+											minute-step="mstepTo" show-meridian="ismeridianTo"></uib-timepicker>
+									</th>
+								</tr>
+								<!-- <tr>
+									<td>
+										</td>
+									<td>
+										</td>
+								</tr> -->
+								<tr>
+									<td>
+										<button type="button" class="btn btn-primary"
+											ng-click="setTime(fromDay, toDay, openingTimeFrm,openingTimeTo )">Set time
+											
+										</button>
+									</td>
+									<td>
+										<button type="button" ng-click="doSignup(doctor, 'u')" class="btn btn-primary">Save changes</button>
+										
+									</td>
+								</tr>
+							</table>
+
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div layout:fragment="sidebar">
+		<div class="panel panel-primary">
+			<div class="panel-body"></div>
+		</div>
+	</div>
+</body>
+</html>

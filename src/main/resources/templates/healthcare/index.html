@@ -1,0 +1,205 @@
+<html lang="en" ng-app="healthcareWebApp"
+	layout:decorator="/healthcare/layout">
+<head>
+</head>
+<body ng-controller="HealthcareWebController">
+	<div>
+		<div layout:fragment="content">
+			<p class="pull-right visible-xs">
+				<button type="button" class="btn btn-primary btn-xs"
+					data-toggle="offcanvas">Toggle nav</button>
+			</p>
+			<div class="jumbotron">
+				<div class="form-group">
+					<input type="text" class="form-control input-lg"
+						ng-model="search.main"
+						uib-typeahead="key for key in getSearchKey($viewValue)"
+						placeholder="Search doctor by Name, Speclization, City"
+						id="inputSuccess2"
+						typeahead-on-select="getSimpleResult($item, $model, $label, $event, 1)" />
+					<span class="glyphicon glyphicon-search form-control-feedback"></span>
+				</div>
+			</div>
+			<div class="se-pre-con"></div>
+			<blockquote>
+				<p class="text-uppercase">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+					Integer posuere erat a ante.</p>
+				<footer>
+					Someone famous in <cite title="Source Title">Source Title</cite>
+				</footer>
+			</blockquote>
+			<h4>
+				This list contains <span class="badge">{{simpleSearchResults.length}}</span>
+				result(s)
+			</h4>
+			<span sec:authorize="isAuthenticated()"> <span
+				th:text="${#authentication.getPrincipal().getUser().getFirstName()}"></span>
+				<span
+				th:text="${#authentication.getPrincipal().getUser().getLastName()}"></span>
+				<span th:text="${#authentication.getPrincipal().getUser().getId()}"></span>
+				jjkjjkj
+			</span> <span sec:authorize="!isAuthenticated()"> tsttt </span>
+
+			<h1 th:text="${#authentication.name}">Hello
+				[[${#httpServletRequest.remoteUser}]]!</h1>
+
+			<div class="row">
+				<div class="col-xs-12 col-lg-12"
+					ng-repeat="dss in simpleSearchResults">
+					<hr />
+					<div class="media">
+						<div class="media-left">
+							<a href="#" ng-if="!dss.imageMeta.webPath.length">
+								<p>
+									<i class="glyphicon glyphicon-user"
+										style="font-size: 60px; color: lightgray;"></i>
+								</p>
+							</a> <img width="{{dss.imageMeta.width/2}}"
+								height="{{dss.imageMeta.height/2}}"
+								ng-if="dss.imageMeta.webPath.length &gt; 0"
+								alt="{{dss.imageMeta.name}}" src="{{dss.imageMeta.webPath}}" />
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">{{dss.title}} {{dss.firstName}}
+								{{dss.lastName}}</h4>
+							<p>
+								<span class="glyphicon glyphicon-map-marker"></span> This
+								address
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<p class="col-xs-12 col-lg-12">
+							{{dss.description}}
+							<!-- .doctor_id
+							as doctor_i1_1_1_, doctorspec0_.specialization_id as
+							speciali2_1_1_, specializa1_.id as id1_2_2_, specializa1_.name as
+							name2_2_2_ from doctor_specialization doctorspec0_ left outer
+							join specialization specializa1_ on
+							doctorspec0_.specialization_id=specializa1_.id where
+							doctorspec0_.doctor_id=? -->
+						</p>
+					</div>
+					<div class="row">
+						<p class="col-xs-12 col-lg-12">
+							<a ng-repeat="dts in dss.doctorSpecializations" href="#"><span
+								class="badge">{{dts.specialization.name}}</span>&nbsp;</a>
+						</p>
+					</div>
+					<div class="row">
+						<div class="col-xs-3 col-lg-3">
+							<h5>
+								<a href="#" ng-click="search(search, 2)"> <span
+									class="glyphicon glyphicon-star"></span> &nbsp;<span
+									class="glyphicon glyphicon-star"></span> &nbsp;<span
+									class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+									class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+									class="glyphicon glyphicon-star-empty"></span>
+								</a>
+							</h5>
+						</div>
+						<div class="col-xs-2 col-lg-2">
+							<h5>
+								<a href="/doctor/{{dss.id}}">View more ..</a>
+							</h5>
+						</div>
+					</div>
+				</div>
+				<!--/.col-xs-6.col-lg-4-->
+			</div>
+			<!--/row-->
+			<div class="col-md-8 col-md-offset-2">
+				<uib-pagination total-items="bigTotalItems"
+					ng-change="simpleResultPager(bigCurrentPage)"
+					ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
+					boundary-links="true" force-ellipses="true"></uib-pagination>
+			</div>
+		</div>
+		<div layout:fragment="sidebar">
+			<div class="panel panel-primary">
+				<div class="panel-body">
+					<h3>Advanced search</h3>
+					<hr />
+					<div class="form-group">
+						<label for="specialization" class="control-label">Specialization</label>
+						<hc-combo-div id="specialization" name="specialization"
+							ng-model="search.specialization" ng-change="search(search, 0)"
+							ng-init="specialization = search.specialization"
+							url="/rest/healthcare/specializations"
+							class="form-control col-sm-3"></hc-combo-div>
+
+
+					</div>
+
+					<div class="form-group">
+						<label for="city" class="control-label">City</label>
+						<hc-combo-div id="city" name="city" ng-model="search.city"
+							url="/cities" ng-change="search(search, 0)"
+							class="form-control col-sm-3"></hc-combo-div>
+					</div>
+
+					<div class="form-group rating">
+						<label for="ratings" class="control-label">Ratings</label>
+						<p href="#" id="ratings" class="form-control">
+							<sapn ng-repeat="p in ratingPointsArr"> <a
+								ng-click="ratingPointchnage(false,$index, search)" href="#"
+								ng-attr-title="test" ng-if="p.isActive"><span
+								class="glyphicon glyphicon-star"></span></a> <a href="#"
+								ng-click="ratingPointchnage(true,$index+1 ,search)"
+								ng-attr-title="test" ng-if="!p.isActive"><span
+								class="glyphicon glyphicon-star-empty"></span></a> &nbsp;</sapn>
+
+						</p>
+
+						<h4>
+							<a href="#" ng-click="search(search, 1)"> <span
+								class="glyphicon glyphicon-star"></span> &nbsp;<span
+								class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+								class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+								class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+								class="glyphicon glyphicon-star-empty"></span>
+							</a>
+						</h4>
+						<h4>
+							<a href="#" ng-click="search(search, 2)"> <span
+								class="glyphicon glyphicon-star"></span> &nbsp;<span
+								class="glyphicon glyphicon-star"></span> &nbsp;<span
+								class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+								class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+								class="glyphicon glyphicon-star-empty"></span>
+							</a>
+						</h4>
+						<h4>
+							<a href="#" ng-click="search(search, 3)"> <span
+								class="glyphicon glyphicon-star"></span> &nbsp;<span
+								class="glyphicon glyphicon-star"></span> &nbsp;<span
+								class="glyphicon glyphicon-star"></span> &nbsp;<span
+								class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+								class="glyphicon glyphicon-star-empty"></span>
+							</a>
+						</h4>
+						<h4>
+							<a href="#" ng-click="search(search, 4)"> <span
+								class="glyphicon glyphicon-star"></span> &nbsp;<span
+								class="glyphicon glyphicon-star"></span> &nbsp;<span
+								class="glyphicon glyphicon-star"></span> &nbsp;<span
+								class="glyphicon glyphicon-star"></span> &nbsp;<span
+								class="glyphicon glyphicon-star-empty"></span>
+							</a>
+						</h4>
+						<h4>
+							<a href="#" ng-click="search(search, 5)"> <span
+								class="glyphicon glyphicon-star"></span> &nbsp;<span
+								class="glyphicon glyphicon-star"></span> &nbsp;<span
+								class="glyphicon glyphicon-star"></span> &nbsp;<span
+								class="glyphicon glyphicon-star"></span> &nbsp;<span
+								class="glyphicon glyphicon-star"></span>
+							</a>
+						</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
