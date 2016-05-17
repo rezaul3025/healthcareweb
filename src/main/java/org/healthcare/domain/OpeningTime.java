@@ -26,7 +26,7 @@ public class OpeningTime implements Serializable {
 	@Column(name="id")
 	private Long id;
 	
-	@Column(name="time_details")
+	@Column(name="time_details", length=Integer.MAX_VALUE)
 	private String time;
 	
 	@OneToOne(cascade={CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
