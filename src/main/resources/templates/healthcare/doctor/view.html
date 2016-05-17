@@ -8,8 +8,7 @@ and open the template in the editor.
 	layout:decorator="/healthcare/layout">
 <head>
 </head>
-<body ng-controller="HealthcareWebController"
-	th:attr="ng-init='initDoctorView('+${doctorId}+')'">
+<body ng-controller="HealthcareWebController" th:attr="ng-init='initDoctorView('+${doctorId}+')'">
 	<div layout:fragment="content">
 		<p class="pull-right visible-xs">
 			<button type="button" class="btn btn-primary btn-xs"

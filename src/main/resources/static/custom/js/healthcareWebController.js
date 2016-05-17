@@ -38,8 +38,8 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window', '$co
             });
         };
 
-        $scope.getSimpleResult = function (item, model, label, event, bigCurrentPage) {
-            $scope.simpleSearchItem = item;
+        $scope.doSimpleSearch = function (item, model, label, event, bigCurrentPage) {
+            /*$scope.simpleSearchItem = item;
             $http({
                 method: "GET",
                 url: "/rest/healthcare/simple-doctor-serch",
@@ -61,12 +61,14 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window', '$co
                 });
 
             }, function error(response) {
-            });
+            });*/
+        	
+        	window.location.href = '/doctor-search?key='+item+'&page='+bigCurrentPage;
         };
 
-        $scope.simpleResultPager = function (bigCurrentPage) {
+        /*$scope.simpleResultPager = function (bigCurrentPage) {
             $scope.getSimpleResult($scope.simpleSearchItem, null, null, null, bigCurrentPage)
-        };
+        };*/
 
         $scope.ratingPointsArr = [{"point": 1, "isActive": false},
             {"point": 2, "isActive": false},
@@ -124,8 +126,11 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window', '$co
                 params: {}
             }).then(function succes(response) {
                 $scope.doctor = response.data;
-                $scope.openingTimes =  JSON.parse($scope.doctor.openingTime.time);
                 $scope.doctorId = doctorId;
+                if(typeof $scope.doctor.openingTime != 'undefined'){
+                	$scope.openingTimes =  JSON.parse($scope.doctor.openingTime.time);
+            	}
+                
             }, function error(response) {
             });
         }
@@ -189,12 +194,6 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window', '$co
         			var fDay = $scope.openingTimes[e].day;
         			if(fDay == fromDay){
         				$scope.openingTimes[e].time.push(timeEntry);
-        				//$scope.openingTimes[e]=entry;
-        				
-        				/*$scope.openingTimes.pop();
-        				var time = $scope.openingTimes[e].time;
-        				time.push({'from':fromTime,'to':toTime});
-        				$scope.openingTimes.push({'day':fDay,'time':time});*/
         			}
         		}
         	}
@@ -221,3 +220,45 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window', '$co
 
 
     }])
+    
+    
+
+module.controller('HealthcareWebSearchController', ['$http', '$scope', '$window', '$controller', function ($http, $scope, $window, $controller) {
+	
+		var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+	    $http.defaults.headers.common[header] = token;
+	    console.log(token);
+    
+	    $scope.getSimpleResult = function (item, bigCurrentPage) {
+            $scope.simpleSearchItem = item;
+            $http({
+                method: "GET",
+                url: "/rest/healthcare/simple-doctor-serch",
+                params: {term: item,
+                    page: bigCurrentPage - 1,
+                    pageSize: 10}
+            }).then(function succes(response) {
+                $scope.simpleSearchResults = response.data;
+                // $scope.bigTotalItems = response.data.length;
+                $scope.bigCurrentPage = bigCurrentPage;
+
+                $http({
+                    method: "GET",
+                    url: "/rest/healthcare/simple-doctor-serch-count",
+                    params: {term: item}
+                }).then(function succes(response) {
+                    $scope.bigTotalItems = response.data;
+                }, function error(response) {
+                });
+
+            }, function error(response) {
+            });
+        };
+
+        $scope.simpleResultPager = function (bigCurrentPage) {
+            $scope.getSimpleResult($scope.simpleSearchItem, bigCurrentPage)
+        };
+       
+
+    }])    
