@@ -161,15 +161,6 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window', '$co
         $scope.hstepTo = 9;
         $scope.mstepTo = 00;
         
-       /* $scope.timeTables = [
-                             {'day': 'Saturday', 'time': [{'from': '10', 'to': '12'}, {'from': '10', 'to': '12'}]},
-                             {'day': 'Sunday', 'time': [{'from': '10', 'to': '12'}, {'from': '10', 'to': '12'}]},
-                             {'day': 'Monday', 'time': [{'from': '10', 'to': '12'}, {'from': '10', 'to': '12'}]},
-                             {'day': 'Tuesday', 'time': [{'from': '10', 'to': '12'}, {'from': '10', 'to': '12'}]},
-                             {'day': 'Wednesday', 'time': [{'from': '10', 'to': '12'}, {'from': '10', 'to': '12'}]},
-                             {'day': 'Thrusday', 'time': [{'from': '10', 'to': '12'}, {'from': '10', 'to': '12'}]},
-                             {'day': 'Friday', 'time': [{'from': '10', 'to': '12'}, {'from': '10', 'to': '12'}]}
-                         ];*/
         $scope.openingTimes = [];
         
         $scope.setTime = function(fromDay, toDay, fromDate, toDate){
@@ -267,11 +258,15 @@ module.controller('HealthcareWebSearchController', ['$http', '$scope', '$window'
         
         $scope.getAdvanceSearchResult = function (specializations, cities, bigCurrentPage){
         	var empty = ['None'];
+        	
+        	 $scope.searchSpecialization = specializations;
+         	 $scope.searchCity = cities;
+         	
         	$http({
                 method: "GET",
                 url: "/rest/healthcare/advance-doctor-serch",
-                params: {specilizations:typeof specializations != 'undefined'?specializations.split(","):empty,
-              	  		city: typeof cities != 'undefined'?cities.split(","):empty,
+                params: {specializations:typeof specializations != 'undefined'?specializations.split(","):empty,
+                		cities: typeof cities != 'undefined'?cities.split(","):empty,
               	  		page:bigCurrentPage}
             }).then(function mySucces(response) {
           	  $scope.simpleSearchResults = response.data;
@@ -284,8 +279,10 @@ module.controller('HealthcareWebSearchController', ['$http', '$scope', '$window'
             $scope.getSimpleResult($scope.simpleSearchItem, bigCurrentPage)
         };
         
-        $scope.advanceSearch =function(search, page){
-        	window.location.href = '/doctor-search-advance?specializations='+search.specialization+'&cities='+search.city+'&page='+page;
+        $scope.advanceSearch =function(page){
+        	$scope.searchSpecialization = typeof $scope.searchSpecialization != 'undefined'?$scope.searchSpecialization:'none'
+        	$scope.searchCity = typeof $scope.searchCity != 'undefined'?$scope.searchCity:'none'
+        	window.location.href = '/doctor-search-advance?specializations='+ $scope.searchSpecialization+'&cities='+$scope.searchCity+'&page='+page;
         };
        
      
