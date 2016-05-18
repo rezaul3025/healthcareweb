@@ -257,7 +257,7 @@ module.controller('HealthcareWebSearchController', ['$http', '$scope', '$window'
         };
         
         $scope.getAdvanceSearchResult = function (specializations, cities, bigCurrentPage){
-        	var empty = ['None'];
+        	var empty = ['none'];
         	
         	 $scope.searchSpecialization = specializations;
          	 $scope.searchCity = cities;
