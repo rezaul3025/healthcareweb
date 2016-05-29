@@ -24,8 +24,12 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     @Query(value = "SELECT * FROM doctor d"
             + " INNER JOIN doctor_specialization ds on d.id = ds.doctor_id"
             + " INNER JOIN specialization s on s.id = ds.specialization_id"
-            + " where  s.name IN (:sp) AND (case when :isCityAval = true then d.city IN (:city) else 1 end)  LIMIT :page, :pageSize", nativeQuery = true)
-    Set<Doctor> advanceDoctorSearch(@Param("sp") Set<String> sp, @Param("isCityAval") boolean isCityAval,@Param("city") Set<String> city , @Param("pageSize") Integer pageSize, @Param("page") Integer page);
+            + " where  "
+            + " (case when :isSpAval = true then s.name IN (:sp) else 1 end)  "
+            + "	AND "
+            + "	(case when :isCityAval = true then d.city IN (:city) else 1 end)  "
+            + "	LIMIT :page, :pageSize", nativeQuery = true)
+    Set<Doctor> advanceDoctorSearch(@Param("isSpAval") boolean isSpAval, @Param("sp") Set<String> sp, @Param("isCityAval") boolean isCityAval,@Param("city") Set<String> city , @Param("pageSize") Integer pageSize, @Param("page") Integer page);
     
     @Query(value = "SELECT COUNT(distinct d.id) FROM doctor d"
             + " INNER JOIN doctor_specialization ds on d.id = ds.doctor_id"

@@ -46,18 +46,29 @@ public class SearchServiceHandler implements SearchService {
 
 	@Override
 	public Set<Doctor> advanceDoctorSearch(SearchForm searchFrom) {
-		boolean isCityAval = true;
+
 		List<String> city = searchFrom.getCity();
-		 if(city == null || city.isEmpty()){
-			 isCityAval = false;
-		 }
-		 else if(!city.isEmpty() && city.size() == 1){
-			 if(city.get(0).toLowerCase().equals("none") || city.get(0).isEmpty()){
-				 isCityAval = false;
-			 }
-		 }
-		 
-		 return doctorRespository.advanceDoctorSearch(new HashSet<String>(searchFrom.getSpecilizations()), isCityAval, new HashSet<String>(city), 10, searchFrom.getPage()*10);
+
+		boolean isCityAval = normalizeExtraQueryInput(city);
+		
+		boolean isSpAval = normalizeExtraQueryInput(city);
+
+		return doctorRespository.advanceDoctorSearch(isSpAval, new HashSet<String>(searchFrom.getSpecilizations()), isCityAval,
+				new HashSet<String>(city), 10, searchFrom.getPage() * 10);
+	}
+
+	private boolean normalizeExtraQueryInput(List<String> input) {
+		boolean isInputAval = true;
+
+		if (input == null || input.isEmpty()) {
+			isInputAval = false;
+		} else if (!input.isEmpty() && input.size() == 1) {
+			if (input.get(0).toLowerCase().equals("none") || input.get(0).isEmpty() || input.get(0).equals("null")) {
+				isInputAval = false;
+			}
+		}
+
+		return isInputAval;
 	}
 
 }
