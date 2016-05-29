@@ -257,16 +257,15 @@ module.controller('HealthcareWebSearchController', ['$http', '$scope', '$window'
         };
         
         $scope.getAdvanceSearchResult = function (specializations, cities, bigCurrentPage){
-        	var empty = ['none'];
-        	
+
         	 $scope.searchSpecialization = specializations;
          	 $scope.searchCity = cities;
          	
         	$http({
                 method: "GET",
                 url: "/rest/healthcare/advance-doctor-serch",
-                params: {specializations:typeof specializations != 'undefined'?specializations.split(","):empty,
-                		cities: typeof cities != 'undefined'?cities.split(","):empty,
+                params: {specializations:typeof specializations != 'undefined'?specializations.split(","):'',
+                		cities: typeof cities != 'undefined' && cities !=''?cities.split(","):'',
               	  		page:bigCurrentPage}
             }).then(function mySucces(response) {
           	  $scope.simpleSearchResults = response.data;
@@ -281,7 +280,7 @@ module.controller('HealthcareWebSearchController', ['$http', '$scope', '$window'
         
         $scope.advanceSearch =function(page){
         	$scope.searchSpecialization = typeof $scope.searchSpecialization != 'undefined'?$scope.searchSpecialization:'none'
-        	$scope.searchCity = typeof $scope.searchCity != 'undefined'?$scope.searchCity:'none'
+        	$scope.searchCity = typeof $scope.searchCity != 'undefined'?$scope.searchCity:null;
         	window.location.href = '/doctor-search-advance?specializations='+ $scope.searchSpecialization+'&cities='+$scope.searchCity+'&page='+page;
         };
        
