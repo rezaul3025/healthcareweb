@@ -11,9 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.util.StringUtils;
 
 @Controller
+@SessionAttributes({"key","page"})
 public class HealthcareWebController {
 	@RequestMapping(value = "/doctor/{id}")
 	public String doctorView(@PathVariable("id") Long id, Model model) {
@@ -37,22 +40,29 @@ public class HealthcareWebController {
 	}
 
 	@RequestMapping(value = "/doctor-search-simple")
-	public String searchPage(@RequestParam("key") String key, @RequestParam("page") Integer page, Model model) {
-		model.addAttribute("searchType", "simple");
-		model.addAttribute("key", key);
-		model.addAttribute("page", page);
+	public ModelAndView searchPage(@RequestParam("key") String key, @RequestParam("page") Integer page) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("searchType", "simple");
+		modelAndView.addObject("key", key);
+		modelAndView.addObject("page", page);
 
-		return "healthcare/search/search";
+		modelAndView.setViewName("healthcare/search/search");
+
+		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/doctor-search-advance")
-	public String searchPage(@RequestParam("specializations") String specializations,@RequestParam("cities") String cities, @RequestParam("page") Integer page, Model model) {
+	public String searchPage(@RequestParam("specializations") String specializations,
+			@RequestParam("cities") String cities, @RequestParam("page") Integer page, Model model) {
 		Set<String> spTemp = new HashSet<String>(Arrays.asList(specializations.split(",")));
-		
+
 		model.addAttribute("searchType", "advance");
 		model.addAttribute("specializations", StringUtils.join(spTemp, ","));
 		model.addAttribute("cities", cities);
 		model.addAttribute("page", page);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		
 
 		return "healthcare/search/search";
 	}
