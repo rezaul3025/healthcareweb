@@ -48,12 +48,14 @@ public class SearchServiceHandler implements SearchService {
 	public Set<Doctor> advanceDoctorSearch(SearchForm searchFrom) {
 
 		List<String> city = searchFrom.getCity();
+		
+		List<String> specilizations = searchFrom.getSpecilizations();
 
 		boolean isCityAval = normalizeExtraQueryInput(city);
 		
-		boolean isSpAval = normalizeExtraQueryInput(city);
+		boolean isSpAval = normalizeExtraQueryInput(specilizations);
 
-		return doctorRespository.advanceDoctorSearch(isSpAval, new HashSet<String>(searchFrom.getSpecilizations()), isCityAval,
+		return doctorRespository.advanceDoctorSearch(isSpAval, new HashSet<String>(specilizations), isCityAval,
 				new HashSet<String>(city), 10, searchFrom.getPage() * 10);
 	}
 
