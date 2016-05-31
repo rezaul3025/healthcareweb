@@ -8,7 +8,8 @@ and open the template in the editor.
 	layout:decorator="/healthcare/layout">
 <head>
 </head>
-<body ng-controller="HealthcareWebController" th:attr="ng-init='initDoctorView('+${doctorId}+')'">
+<body ng-controller="HealthcareWebController"
+	th:attr="ng-init='initDoctorView('+${doctorId}+')'">
 	<div layout:fragment="content">
 		<p class="pull-right visible-xs">
 			<button type="button" class="btn btn-primary btn-xs"
@@ -22,8 +23,9 @@ and open the template in the editor.
 						<i class="glyphicon glyphicon-user"
 							style="font-size: 60px; color: lightgray;"></i>
 					</p>
-				</a> 
-				<img width="{{doctor.imageMeta.width/2}}" height="{{doctor.imageMeta.height/2}}" ng-if="doctor.imageMeta.webPath.length &gt; 0"
+				</a> <img width="{{doctor.imageMeta.width/2}}"
+					height="{{doctor.imageMeta.height/2}}"
+					ng-if="doctor.imageMeta.webPath.length &gt; 0"
 					alt="{{doctor.imageMeta.name}}" src="{{doctor.imageMeta.webPath}}" />
 			</div>
 			<div class="media-body">
@@ -33,13 +35,12 @@ and open the template in the editor.
 					<span class="glyphicon glyphicon-map-marker"></span> This address
 				</p>
 				<h5>
-					<a href="#" ng-click="search(search, 2)"> <span
-						class="glyphicon glyphicon-star"></span> &nbsp;<span
-						class="glyphicon glyphicon-star"></span> &nbsp;<span
-						class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
-						class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
+					<a> <span
+						ng-repeat="r in calculateAvgRate(doctor.comments) track by $index">
+						<span class="glyphicon glyphicon-star"></span>
+					</span> <span ng-repeat="r in remainTopRate track by $index"> <span
 						class="glyphicon glyphicon-star-empty"></span>
-					</a>
+					</span> </a>
 				</h5>
 			</div>
 		</div>
@@ -72,15 +73,17 @@ and open the template in the editor.
 				<hr />
 				<table>
 					<tr>
-						<th><a><span class="glyphicon glyphicon-phone-alt"></span></a> </th>
+						<th><a><span class="glyphicon glyphicon-phone-alt"></span></a>
+						</th>
 						<td style="padding-left: 10px">{{doctor.mobile}}</td>
 					</tr>
 					<tr>
-						<th><a><span class="glyphicon glyphicon-envelope"></span></a> </th>
+						<th><a><span class="glyphicon glyphicon-envelope"></span></a>
+						</th>
 						<td style="padding-left: 10px">{{doctor.email}}</td>
 					</tr>
 					<tr>
-						<th><a><span class="glyphicon glyphicon-globe"></span></a> </th>
+						<th><a><span class="glyphicon glyphicon-globe"></span></a></th>
 						<td style="padding-left: 10px"><a href="{{doctor.website}}">{{doctor.website}}</a>
 						</td>
 					</tr>
@@ -114,7 +117,7 @@ and open the template in the editor.
 								<p th:replace="/healthcare/fragments/fragments :: rating" />
 							</blockquote>
 
-							
+
 						</td>
 					</tr>
 				</table>

@@ -5,6 +5,9 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window', '$co
 	$controller('SignUpController',{
 		$scope:$scope
 	});
+	$controller('HealthcareWebSearchController',{
+		$scope:$scope
+	});
 		
 		var token = $("meta[name='_csrf']").attr("content");
 	    var header = $("meta[name='_csrf_header']").attr("content");
@@ -293,6 +296,23 @@ module.controller('HealthcareWebSearchController', ['$http', '$scope', '$window'
         	$scope.searchCity = typeof $scope.searchCity != 'undefined' && $scope.searchCity !=''?$scope.searchCity:'';
         	window.location.href = '/doctor-search-advance?specializations='+ $scope.searchSpecialization+'&cities='+$scope.searchCity+'&page='+page;
         };
+        
+        
+        
+        $scope.calculateAvgRate = function(comments){
+        	var totalRate = 0;
+        	for(comment in comments){
+        		totalRate +=parseInt(comments[comment].rate);
+        	}
+        	
+        	if(totalRate == 0){
+        		return 0;
+        	}
+        	
+        	$scope.remainTopRate = new Array(5-Math.round(totalRate/comments.length))
+        	
+        	return new Array(Math.round(totalRate/comments.length));   
+        }
        
      
     }])    
