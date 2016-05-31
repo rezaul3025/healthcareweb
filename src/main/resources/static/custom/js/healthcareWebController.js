@@ -129,6 +129,7 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window', '$co
                 $scope.doctorId = doctorId;
                 if(typeof $scope.doctor.openingTime != 'undefined'){
                 	$scope.openingTimes =  JSON.parse($scope.doctor.openingTime.time);
+                	$scope.openingTimes = $scope.openingTimes == null ? []:$scope.openingTimes;
             	}
                 
             }, function error(response) {
@@ -154,12 +155,13 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window', '$co
         $scope.openingTimeFrm = new Date();
 
         $scope.hstepFrm = 9;
-        $scope.mstepFrm = 00;
+        $scope.mstepFrm = 1;
+        $scope.ismeridianFrm = false;
         
         $scope.openingTimeTo = new Date();
 
         $scope.hstepTo = 9;
-        $scope.mstepTo = 00;
+        $scope.mstepTo = 1;
         
         $scope.openingTimes = [];
         
@@ -206,7 +208,7 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window', '$co
         }
         
         $scope.changed = function () {
-            console.log('Time changed to: ' + $scope.openingTime);
+            console.log('Time changed to: ' + $scope.openingTimeTo);
           };
 
 
