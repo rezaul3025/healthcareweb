@@ -3,7 +3,7 @@
 <head>
 </head>
 <body ng-controller="HealthcareWebSearchController"
-	th:attr="ng-init='getSearchResult(\''+${searchType}+'\',\''+${key}+'\',\''+${specializations}+'\',\''+${cities}+'\','+${page}+')'">
+	th:attr="ng-init='getSearchResult(\''+${searchType}+'\',\''+${key}+'\',\''+${specializations}+'\',\''+${cities}+'\','+${rate}+','+${page}+')'">
 	<div>
 		<div layout:fragment="content">
 			<p class="pull-right visible-xs">
@@ -97,7 +97,7 @@
 					<div class="form-group">
 						<label for="specialization" class="control-label">Specialization</label>
 						<hc-combo-div id="specialization" name="specialization"
-							ng-model="searchSpecialization" ng-change="advanceSearch( 0)"
+							ng-model="searchSpecialization" ng-change="advanceSearch(0, 0)"
 							ng-init="specialization = searchSpecialization"
 							url="/rest/healthcare/specializations"
 							class="form-control col-sm-3"></hc-combo-div>
@@ -106,14 +106,14 @@
 					<div class="form-group">
 						<label for="city" class="control-label">City</label>
 						<hc-combo-div id="city" name="city" ng-model="searchCity"
-							url="/rest/healthcare/cities" ng-change="advanceSearch(0)"
+							url="/rest/healthcare/cities" ng-change="advanceSearch(0, 0)"
 							class="form-control col-sm-3"></hc-combo-div>
 					</div>
 
 					<div class="form-group rating">
 						<label for="ratings" class="control-label">Ratings</label>
 						<h4>
-							<a href="#" ng-click="search(search, 1)"> <span
+							<a href="#" ng-click="advanceSearch(0, 1)"> <span
 								class="glyphicon glyphicon-star"></span> &nbsp;<span
 								class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
 								class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
@@ -122,7 +122,7 @@
 							</a>
 						</h4>
 						<h4>
-							<a href="#" ng-click="search(search, 2)"> <span
+							<a href="#" ng-click="advanceSearch(0, 2)"> <span
 								class="glyphicon glyphicon-star"></span> &nbsp;<span
 								class="glyphicon glyphicon-star"></span> &nbsp;<span
 								class="glyphicon glyphicon-star-empty"></span> &nbsp;<span
@@ -131,7 +131,7 @@
 							</a>
 						</h4>
 						<h4>
-							<a href="#" ng-click="search(search, 3)"> <span
+							<a href="#" ng-click="advanceSearch(0, 3)"> <span
 								class="glyphicon glyphicon-star"></span> &nbsp;<span
 								class="glyphicon glyphicon-star"></span> &nbsp;<span
 								class="glyphicon glyphicon-star"></span> &nbsp;<span
@@ -140,7 +140,7 @@
 							</a>
 						</h4>
 						<h4>
-							<a href="#" ng-click="search(search, 4)"> <span
+							<a href="#" ng-click="advanceSearch(0,4)"> <span
 								class="glyphicon glyphicon-star"></span> &nbsp;<span
 								class="glyphicon glyphicon-star"></span> &nbsp;<span
 								class="glyphicon glyphicon-star"></span> &nbsp;<span
@@ -149,7 +149,7 @@
 							</a>
 						</h4>
 						<h4>
-							<a href="#" ng-click="search(search, 5)"> <span
+							<a href="#" ng-click="advanceSearch(0,5)"> <span
 								class="glyphicon glyphicon-star"></span> &nbsp;<span
 								class="glyphicon glyphicon-star"></span> &nbsp;<span
 								class="glyphicon glyphicon-star"></span> &nbsp;<span

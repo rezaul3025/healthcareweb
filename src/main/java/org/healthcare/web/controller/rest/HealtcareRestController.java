@@ -104,8 +104,8 @@ public class HealtcareRestController {
     }
     
     @RequestMapping(value = "/advance-doctor-serch", method = RequestMethod.GET)
-    public Set<Doctor> advanceDoctorSearch(@RequestParam("specializations") String specializations, @RequestParam("cities") String cities, @RequestParam("page") Integer page) {
-    	SearchForm searchForm = new SearchForm(Arrays.asList(specializations.split(",")), Arrays.asList(cities.split(",")), page);
+    public Set<Doctor> advanceDoctorSearch(@RequestParam("specializations") String specializations, @RequestParam("cities") String cities,@RequestParam("rate") Integer rate, @RequestParam("page") Integer page) {
+    	SearchForm searchForm = new SearchForm(Arrays.asList(specializations.split(",")), Arrays.asList(cities.split(",")), rate, page);
     	return searchService.advanceDoctorSearch(searchForm);
     }
     

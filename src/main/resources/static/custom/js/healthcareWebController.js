@@ -226,12 +226,12 @@ module.controller('HealthcareWebSearchController', ['$http', '$scope', '$window'
 	    $http.defaults.headers.common[header] = token;
 	    console.log(token);
 	    
-	    $scope.getSearchResult = function(searchType, simpleSearchKey, specializations, cities, bigCurrentPage){
+	    $scope.getSearchResult = function(searchType, simpleSearchKey, specializations, cities, rate, bigCurrentPage){
 	    	if(searchType == 'simple'){
 	    		$scope.getSimpleResult(simpleSearchKey, bigCurrentPage);
 	    	}
 	    	else if(searchType == 'advance' && ((specializations != null && specializations != '') || (cities != null && cities != ''))){
-	    		$scope.getAdvanceSearchResult(specializations, cities, bigCurrentPage);
+	    		$scope.getAdvanceSearchResult(specializations, cities, rate, bigCurrentPage);
 	    	}
 	    	else if(searchType == 'advance' && ((specializations == null || specializations == '') && (cities == null || cities == ''))){
 	    		$scope.getSimpleResult(simpleSearchKey, bigCurrentPage);
@@ -271,16 +271,18 @@ module.controller('HealthcareWebSearchController', ['$http', '$scope', '$window'
             $scope.getSimpleResult($scope.simpleSearchItem, bigCurrentPage)
         };
         
-        $scope.getAdvanceSearchResult = function (specializations, cities, bigCurrentPage){
+        $scope.getAdvanceSearchResult = function (specializations, cities, rate, bigCurrentPage){
 
         	 $scope.searchSpecialization = specializations;
          	 $scope.searchCity = cities;
+         	$scope.rate = rate;
          	
         	$http({
                 method: "GET",
                 url: "/rest/healthcare/advance-doctor-serch",
                 params: {specializations:typeof specializations != 'undefined' && specializations != ''?specializations.split(","):'',
                 		cities: typeof cities != 'undefined' && cities !=''?cities.split(","):'',
+                		rate: rate,
               	  		page:bigCurrentPage}
             }).then(function mySucces(response) {
           	  $scope.simpleSearchResults = response.data;
@@ -291,10 +293,11 @@ module.controller('HealthcareWebSearchController', ['$http', '$scope', '$window'
 
        
         
-        $scope.advanceSearch =function(page){
+        $scope.advanceSearch =function(page, rate){
         	$scope.searchSpecialization = typeof $scope.searchSpecialization != 'undefined' && $scope.searchSpecialization != ''?$scope.searchSpecialization:''
         	$scope.searchCity = typeof $scope.searchCity != 'undefined' && $scope.searchCity !=''?$scope.searchCity:'';
-        	window.location.href = '/doctor-search-advance?specializations='+ $scope.searchSpecialization+'&cities='+$scope.searchCity+'&page='+page;
+        	$scope.rate = rate;
+        	window.location.href = '/doctor-search-advance?specializations='+ $scope.searchSpecialization+'&cities='+$scope.searchCity+'&rate='+$scope.rate+'&page='+page;
         };
         
         

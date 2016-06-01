@@ -24,12 +24,15 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     @Query(value = "SELECT * FROM doctor d"
             + " INNER JOIN doctor_specialization ds on d.id = ds.doctor_id"
             + " INNER JOIN specialization s on s.id = ds.specialization_id"
+         //   + " INNER JOIN comment com on com.doctor_id = d.id"
             + " where  "
             + " (case when :isSpAval = true then s.name IN (:sp) else 1 end)  "
             + "	AND "
-            + "	(case when :isCityAval = true then d.city IN (:city) else 1 end)  "
+            + "	(case when :isCityAval = true then d.city IN (:city) else 1 end) "
+            + " AND "
+            + " (case when :isRateAval = true then (SELECT ROUND(AVG(rate)) from comment where doctor_id = d.id) >= :rate else 1 end)"
             + "	LIMIT :page, :pageSize", nativeQuery = true)
-    Set<Doctor> advanceDoctorSearch(@Param("isSpAval") boolean isSpAval, @Param("sp") Set<String> sp, @Param("isCityAval") boolean isCityAval,@Param("city") Set<String> city , @Param("pageSize") Integer pageSize, @Param("page") Integer page);
+    Set<Doctor> advanceDoctorSearch(@Param("isSpAval") boolean isSpAval, @Param("sp") Set<String> sp, @Param("isCityAval") boolean isCityAval,@Param("city") Set<String> city , @Param("isRateAval") boolean isRateAval,@Param("rate") Integer rate,  @Param("pageSize") Integer pageSize, @Param("page") Integer page);
     
     @Query(value = "SELECT COUNT(distinct d.id) FROM doctor d"
             + " INNER JOIN doctor_specialization ds on d.id = ds.doctor_id"

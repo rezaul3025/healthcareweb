@@ -53,12 +53,13 @@ public class HealthcareWebController {
 
 	@RequestMapping(value = "/doctor-search-advance")
 	public String searchPage(@RequestParam("specializations") String specializations,
-			@RequestParam("cities") String cities, @RequestParam("page") Integer page, Model model) {
+			@RequestParam("cities") String cities,@RequestParam("rate") Integer rate, @RequestParam("page") Integer page, Model model) {
 		Set<String> spTemp = new HashSet<String>(Arrays.asList(specializations.split(",")));
 
 		model.addAttribute("searchType", "advance");
 		model.addAttribute("specializations", StringUtils.join(spTemp, ","));
 		model.addAttribute("cities", cities);
+		model.addAttribute("rate", rate);
 		model.addAttribute("page", page);
 		
 		ModelAndView modelAndView = new ModelAndView();

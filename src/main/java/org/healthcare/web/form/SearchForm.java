@@ -10,13 +10,16 @@ public class SearchForm {
 
 	private Integer page;
 	
+	private Integer rate;
+	
 	public SearchForm(){
 		
 	}
 	
-	public SearchForm(List<String> specilizations, List<String> city, Integer page){
+	public SearchForm(List<String> specilizations, List<String> city, Integer rate, Integer page){
 		this.specilizations = specilizations;
 		this.city = city;
+		this.rate = rate;
 		this.page = page;
 	}
 
@@ -52,4 +55,11 @@ public class SearchForm {
 		this.page = page;
 	}
 
+	public Integer getRate() {
+		return rate;
+	}
+
+	public void setRate(Integer rate) {
+		this.rate = rate;
+	}
 }
