@@ -122,7 +122,8 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window', '$co
         $scope.maxSize = 5;
 
 
-        $scope.initDoctorView = function (doctorId) {
+        $scope.initDoctorView = function (doctorId, isAuthenticated) {
+        	$scope.isAuthenticated = isAuthenticated;
             $http({
                 method: "GET",
                 url: "/rest/healthcare/doctor/" + doctorId,
@@ -140,19 +141,24 @@ module.controller('HealthcareWebController', ['$http', '$scope', '$window', '$co
         }
 
         $scope.addComment = function(comment, userId){
-        	comment['rate'] = $scope.ratingPoints;
-        	comment['doctorId'] = $scope.doctorId; 
-        	comment['userId'] = userId;
-        	
-        	$http({
-                method: "POST",
-                url: "/rest/healthcare/comment-on-doctor",
-                data: comment,
-            }).then(function mySucces(response) {
-            	 $scope.initDoctorView($scope.doctorId);
-            }, function myError(response) {
-                $scope.myWelcome = response.statusText;
-            });
+        	if(typeof $scope.isAuthenticated != 'undefined' && $scope.isAuthenticated){
+	        	comment['rate'] = $scope.ratingPoints;
+	        	comment['doctorId'] = $scope.doctorId; 
+	        	comment['userId'] = userId;
+	        	
+	        	$http({
+	                method: "POST",
+	                url: "/rest/healthcare/comment-on-doctor",
+	                data: comment,
+	            }).then(function mySucces(response) {
+	            	 $scope.initDoctorView($scope.doctorId);
+	            }, function myError(response) {
+	                $scope.myWelcome = response.statusText;
+	            });
+        	}
+        	else{
+        		window.location.href = 'healthcare/login';
+        	}
         }
         
         $scope.openingTimeFrm = new Date();

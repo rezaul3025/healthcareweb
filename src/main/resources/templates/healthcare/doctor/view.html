@@ -9,7 +9,7 @@ and open the template in the editor.
 <head>
 </head>
 <body ng-controller="HealthcareWebController"
-	th:attr="ng-init='initDoctorView('+${doctorId}+')'">
+	th:attr="ng-init='initDoctorView('+${doctorId}+','+${isAuthenticated}+')'">
 	<div layout:fragment="content">
 		<p class="pull-right visible-xs">
 			<button type="button" class="btn btn-primary btn-xs"
@@ -150,8 +150,8 @@ and open the template in the editor.
 				<button sec:authorize="isAuthenticated()" type="button"
 					th:attr="ng-click='addComment(comment,'+${#authentication.getPrincipal().getUser().getId()}+')'"
 					class="btn btn-default">Add comment</button>
-				<button sec:authorize="!isAuthenticated()" type="button"
-					class="btn btn-default">Add comment</button>
+				<a href="/login" sec:authorize="!isAuthenticated()" type="button"
+					class="btn btn-default">Please, login to add comment</a>
 
 			</div>
 		</div>

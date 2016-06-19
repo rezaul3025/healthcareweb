@@ -22,9 +22,11 @@ public class HealthcareWebController {
 	public String doctorView(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("doctorId", id);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("isAuthenticated", !auth.getPrincipal().toString().startsWith("anonymous"));
+		/*
 		if (auth.getPrincipal().toString().startsWith("anonymous")) {
 			return "healthcare/login";
-		}
+		}*/
 		return "healthcare/doctor/view";
 	}
 

@@ -13,7 +13,7 @@
 				<div class="form-group">
 					<input type="text" class="form-control input-lg"
 						ng-model="search.main"
-						uib-typeahead="key for key in getSearchKey($viewValue)"
+						uib-typeahead="key for key in getSearchKey($viewValue) | limitTo:10"
 						placeholder="Search doctor by Name, Speclization, City"
 						id="inputSuccess2"
 						typeahead-on-select="doSimpleSearch($item, $model, $label, $event, 0)" />
@@ -32,13 +32,13 @@
 				This list contains <span class="badge">{{simpleSearchResults.length}}</span>
 				result(s)
 			</h4>
-			<span sec:authorize="isAuthenticated()"> <span
-				th:text="${#authentication.getPrincipal().getUser().getFirstName()}"></span>
-				<span
-				th:text="${#authentication.getPrincipal().getUser().getLastName()}"></span>
+			<span sec:authorize="isAuthenticated()"> 
+				<span th:text="${#authentication.getPrincipal().getUser().getFirstName()}"></span>
+				<span th:text="${#authentication.getPrincipal().getUser().getLastName()}"></span>
 				<span th:text="${#authentication.getPrincipal().getUser().getId()}"></span>
 				jjkjjkj
-			</span> <span sec:authorize="!isAuthenticated()"> tsttt </span>
+			</span> 
+			<span sec:authorize="!isAuthenticated()"> tsttt </span>
 
 			<h1 th:text="${#authentication.name}">Hello
 				[[${#httpServletRequest.remoteUser}]]!</h1>
